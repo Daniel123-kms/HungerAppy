@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#07070f">
+<title>HUNGERHERO · Österreich</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;-webkit-touch-callout:none}
+html,body{height:100%;overflow:hidden;background:#07070f;font-family:'DM Sans',sans-serif;color:#f0f0f0;overscroll-behavior:none}
+:root{
+  --bg:#07070f;--surf:#0f0f1e;--card:#13132a;--card2:#1a1a30;
+  --bdr:rgba(255,255,255,.07);--bdr2:rgba(255,255,255,.13);
+  --acc:#FF6B35;--acc2:#FF006E;--grn:#00E676;--blu:#448AFF;
+  --pur:#C084FC;--yel:#FFD60A;--red:#ef4444;
+  --txt:rgba(255,255,255,.92);--mut:rgba(255,255,255,.38);--dim:rgba(255,255,255,.05);
+}
+.syne{font-family:'Syne',sans-serif}
+::-webkit-scrollbar{display:none}
+#app{display:flex;flex-direction:column;height:100vh;max-width:480px;margin:0 auto;background:var(--bg);position:relative;overflow:hidden}
+
+/* HEADER */
+.hdr{flex-shrink:0;padding:11px 15px 8px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--bdr)}
+.logo-wrap{}
+.logo{font-size:21px;font-weight:900;letter-spacing:-.05em;line-height:1;font-family:'Syne',sans-serif}
+.logo b{color:var(--acc)}
+.logo-sub{font-size:9px;color:var(--mut);letter-spacing:.14em;text-transform:uppercase;margin-top:2px}
+.hdr-btns{display:flex;gap:5px}
+.hb{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--dim);border:1px solid var(--bdr);cursor:pointer;font-size:13px;transition:transform .12s;user-select:none;flex-shrink:0}
+.hb:active{transform:scale(.82)}
+.hb.pro{background:linear-gradient(135deg,rgba(255,214,10,.2),rgba(255,107,53,.2));border-color:rgba(255,214,10,.4)}
+
+/* LOC STRIP */
+.loc{flex-shrink:0;padding:5px 14px;display:flex;align-items:center;gap:7px;background:rgba(68,138,255,.05);border-bottom:1px solid rgba(68,138,255,.1);cursor:pointer}
+.loc-dot{width:6px;height:6px;border-radius:50%;background:var(--grn);flex-shrink:0}
+.loc-dot.off{background:var(--mut)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.loc-dot.live{animation:blink 2s infinite}
+.loc-txt{font-size:10px;color:var(--mut);flex:1}
+.loc-city{font-weight:800;color:var(--blu)}
+.loc-arr{font-size:10px;color:var(--mut)}
+
+/* TABS */
+.tabs{flex-shrink:0;display:flex;border-bottom:1px solid var(--bdr);background:var(--bg);overflow-x:auto}
+.tab{flex:1;min-width:0;padding:7px 2px 6px;text-align:center;font-size:9px;font-weight:700;color:var(--mut);cursor:pointer;letter-spacing:.04em;text-transform:uppercase;border-bottom:2px solid transparent;transition:all .18s;user-select:none}
+.tab.on{color:var(--acc);border-bottom-color:var(--acc)}
+.ti{font-size:14px;display:block;margin-bottom:1px}
+
+/* VIEW */
+#view{flex:1;display:flex;flex-direction:column;overflow:hidden}
+.scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch}
+
+/* MOOD */
+.mchat{flex:1;overflow-y:auto;padding:12px 14px 6px;display:flex;flex-direction:column;gap:9px}
+.bbl{max-width:85%;padding:10px 14px;border-radius:18px;font-size:13px;line-height:1.5;animation:fu .22s ease}
+.bbl.ai{background:var(--card);border:1px solid var(--bdr2);align-self:flex-start;border-bottom-left-radius:4px}
+.bbl.usr{background:var(--acc);color:#fff;align-self:flex-end;border-bottom-right-radius:4px}
+.tdots{display:flex;gap:4px;align-items:center;padding:2px 0}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--mut);animation:dp 1.2s infinite}
+.dot:nth-child(2){animation-delay:.2s}.dot:nth-child(3){animation-delay:.4s}
+@keyframes dp{0%,60%,100%{transform:scale(1);opacity:.4}30%{transform:scale(1.3);opacity:1}}
+.mopts{flex-shrink:0;padding:7px 12px 8px;display:flex;flex-wrap:wrap;gap:7px}
+.mopt{padding:9px 14px;border-radius:50px;border:1px solid var(--bdr2);background:var(--card);font-size:12px;font-weight:600;cursor:pointer;transition:all .15s;user-select:none}
+.mopt:active{background:rgba(255,107,53,.18);border-color:var(--acc);color:var(--acc)}
+.mgo{flex-shrink:0;margin:6px 14px 12px;padding:14px;border-radius:14px;background:var(--acc);color:#fff;font-size:14px;font-weight:800;border:none;cursor:pointer;font-family:'Syne',sans-serif;display:none;transition:transform .15s;width:calc(100% - 28px)}
+.mgo.show{display:block}
+.mgo:active{transform:scale(.97)}
+
+/* CARDS */
+.card-area{flex:1;position:relative;margin:8px 12px 4px}
+.card{position:absolute;inset:0;border-radius:20px;overflow:hidden;border:1px solid var(--bdr2);user-select:none}
+.ctop{position:absolute;top:0;left:0;right:0;padding:13px 13px 0;display:flex;align-items:flex-start;justify-content:space-between;z-index:5}
+.cbadge{padding:5px 11px;border-radius:50px;font-size:10px;font-weight:800;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14);letter-spacing:.06em;text-transform:uppercase}
+.ctop-btns{display:flex;gap:6px}
+.cib{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.14);font-size:13px;cursor:pointer;transition:transform .15s;flex-shrink:0}
+.cib:active{transform:scale(.82)}
+.cemoji{position:absolute;top:50%;left:50%;transform:translate(-50%,-60%);font-size:86px;line-height:1;pointer-events:none;filter:drop-shadow(0 8px 24px rgba(0,0,0,.45))}
+.cbot{position:absolute;bottom:0;left:0;right:0;padding:15px;background:linear-gradient(to top,rgba(7,7,15,.98) 0%,rgba(7,7,15,.82) 55%,transparent 100%)}
+.ctags{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:7px}
+.ctag{padding:3px 8px;border-radius:50px;font-size:9px;font-weight:700;background:rgba(255,255,255,.09);letter-spacing:.05em;text-transform:uppercase}
+.ctag.vegan,.ctag.vegetarian{background:rgba(0,230,118,.14);color:var(--grn)}
+.ctag.spicy{background:rgba(239,68,68,.14);color:#f87171}
+.ctag.fast,.ctag.trending{background:rgba(68,138,255,.14);color:var(--blu)}
+.ctag.sweet{background:rgba(255,214,10,.14);color:var(--yel)}
+.cname{font-size:22px;font-weight:900;color:#fff;line-height:1.1;margin-bottom:4px;font-family:'Syne',sans-serif}
+.cdesc{font-size:11px;color:rgba(255,255,255,.42);line-height:1.4;margin-bottom:9px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.cmeta{display:flex;gap:12px;align-items:center}
+.cmi{font-size:11px;color:rgba(255,255,255,.52);display:flex;align-items:center;gap:3px}
+.cprice{font-size:15px;font-weight:800;color:#fff;margin-left:auto}
+.stamp{position:absolute;padding:8px 16px;border-radius:8px;border-width:3px;border-style:solid;font-size:22px;font-weight:900;letter-spacing:.08em;font-family:'Syne',sans-serif;opacity:0;pointer-events:none;z-index:10}
+.sy{top:26px;left:14px;color:var(--grn);border-color:var(--grn);transform:rotate(-18deg)}
+.sn{top:26px;right:14px;color:var(--red);border-color:var(--red);transform:rotate(18deg)}
+.sp{top:50%;left:50%;transform:translate(-50%,-50%) rotate(-8deg);color:var(--blu);border-color:var(--blu)}
+.swmeta{flex-shrink:0;padding:3px 14px;font-size:10px;color:var(--mut);text-align:center}
+.swbtns{flex-shrink:0;padding:5px 14px 9px;display:flex;align-items:center;justify-content:center;gap:10px}
+.swb{border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid;cursor:pointer;transition:all .15s;user-select:none;flex-shrink:0}
+.swb:active{transform:scale(.85)}
+@keyframes glow{0%,100%{box-shadow:0 0 0 0 rgba(255,107,53,.3)}50%{box-shadow:0 0 0 8px rgba(0,0,0,0)}}
+.gp{animation:glow 2.2s infinite}
+.tchips{flex-shrink:0;padding:3px 14px 8px;display:flex;gap:5px;flex-wrap:wrap;justify-content:center}
+.tchip{padding:3px 9px;border-radius:50px;font-size:10px;font-weight:600;background:rgba(255,107,53,.1);color:var(--acc);border:1px solid rgba(255,107,53,.22)}
+
+/* LIST ITEMS */
+.li{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:1px solid var(--bdr);cursor:pointer}
+.li:active{background:rgba(255,255,255,.03)}
+.li-ico{font-size:28px;flex-shrink:0;width:38px;text-align:center}
+.li-body{flex:1;min-width:0}
+.li-name{font-size:13px;font-weight:700;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li-sub{font-size:11px;color:var(--mut);margin-top:2px}
+.smb{padding:6px 13px;border-radius:50px;font-size:11px;font-weight:700;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;transition:transform .12s;flex-shrink:0}
+.smb:active{transform:scale(.9)}
+
+/* WEEK PLAN */
+.wgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;padding:9px 13px}
+.wday{border-radius:10px;padding:6px 3px;text-align:center;background:var(--card);border:1px solid var(--bdr2);cursor:pointer;transition:all .18s;min-height:60px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}
+.wday.today{border-color:var(--acc);background:rgba(255,107,53,.1)}
+.wday.filled{border-color:rgba(255,107,53,.28)}
+.wdn{font-size:8px;font-weight:700;color:var(--mut);text-transform:uppercase}
+.wdd{font-size:10px;font-weight:700;color:var(--txt)}
+.wde{font-size:17px;line-height:1}
+.wdf{font-size:8px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:36px}
+
+/* HEALTH */
+.hgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 13px;margin-bottom:10px}
+.hcard{background:var(--card);border-radius:14px;padding:12px;border:1px solid var(--bdr2);position:relative;overflow:hidden;cursor:pointer}
+.hcard::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:14px 14px 0 0}
+.hg::before{background:var(--grn)}.ho::before{background:var(--acc)}.hb::before{background:var(--blu)}.hp::before{background:var(--pur)}
+.hval{font-size:20px;font-weight:900;color:#fff;font-family:'Syne',sans-serif;display:block;margin-bottom:1px}
+.hlbl{font-size:9px;color:var(--mut);text-transform:uppercase;letter-spacing:.08em;display:block;margin-bottom:6px}
+.hbar{height:4px;border-radius:2px;background:var(--dim);overflow:hidden}
+.hfill{height:100%;border-radius:2px;transition:width .8s ease}
+.hsub{font-size:9px;color:var(--mut);margin-top:4px;display:block}
+.wbars{display:flex;align-items:flex-end;gap:4px;padding:8px 13px 2px;height:70px}
+.wcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;height:100%;justify-content:flex-end}
+.wbar{width:100%;border-radius:3px 3px 0 0;min-height:3px}
+.wbv{font-size:8px;font-weight:700;text-align:center;color:rgba(255,255,255,.35)}
+.wbd{font-size:9px;color:var(--mut);text-align:center}
+.wglass{flex:1;min-width:calc(12.5% - 5px);aspect-ratio:1;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;transition:all .2s;border:1px solid var(--bdr)}
+.wglass.f{background:rgba(68,138,255,.22);border-color:rgba(68,138,255,.45)}
+.wglass.e{background:var(--dim)}
+
+/* SOCIAL */
+.scard{margin:8px 13px;border-radius:14px;background:var(--card);border:1px solid var(--bdr2);overflow:hidden}
+.scard-hdr{padding:11px 13px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--bdr)}
+.favt{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;flex-shrink:0}
+.trow{display:flex;align-items:center;gap:10px;padding:9px 13px;border-bottom:1px solid var(--bdr)}
+.trank{font-size:15px;font-weight:900;color:var(--mut);width:20px;flex-shrink:0;font-family:'Syne',sans-serif}
+.trank.top{color:var(--yel)}
+
+/* PROFILE */
+.pstat{background:var(--card);border-radius:13px;padding:12px;text-align:center;flex:1;border:1px solid var(--bdr2)}
+.psn{font-size:22px;font-weight:900;color:var(--acc);display:block;font-family:'Syne',sans-serif}
+.psl{font-size:9px;color:var(--mut);text-transform:uppercase;letter-spacing:.08em;margin-top:2px;display:block}
+.tbar{height:5px;border-radius:3px;background:var(--dim);overflow:hidden;margin-top:4px}
+.tbf{height:100%;border-radius:3px;background:var(--acc)}
+
+/* FRIDGE */
+.fchip{padding:7px 12px;border-radius:50px;font-size:12px;font-weight:600;background:rgba(68,138,255,.1);border:1px solid rgba(68,138,255,.22);color:var(--blu);display:inline-flex;align-items:center;gap:6px;cursor:pointer}
+.qing{padding:6px 11px;border-radius:50px;font-size:11px;font-weight:600;border:1px solid var(--bdr2);background:var(--card);cursor:pointer;transition:all .15s}
+.qing:active{background:rgba(68,138,255,.14);border-color:var(--blu);color:var(--blu)}
+.mpct{padding:3px 8px;border-radius:50px;font-size:10px;font-weight:800;flex-shrink:0}
+.mfull{background:rgba(0,230,118,.12);color:var(--grn);border:1px solid rgba(0,230,118,.25)}
+.mpart{background:rgba(255,107,53,.12);color:var(--acc);border:1px solid rgba(255,107,53,.25)}
+
+/* ACHIEVE */
+.agrid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:10px 13px}
+.acard{border-radius:12px;padding:11px 7px;text-align:center;border:1px solid var(--bdr2);background:var(--card)}
+.acard.locked{filter:grayscale(.9);opacity:.35}
+.acard.unlocked{border-color:rgba(255,214,10,.3);background:rgba(255,214,10,.05)}
+.aico{font-size:26px;display:block;margin-bottom:4px}
+.atitle{font-size:9px;font-weight:700;color:var(--txt);line-height:1.3}
+
+/* OVERLAYS */
+.ovl{position:fixed;inset:0;background:rgba(0,0,0,.85);backdrop-filter:blur(14px);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .22s;max-width:480px;margin:0 auto}
+.ovl.on{opacity:1;pointer-events:all}
+.sheet{background:var(--surf);border-radius:26px 26px 0 0;width:100%;padding:22px 18px 38px;border-top:1px solid var(--bdr2);transform:translateY(20px);transition:transform .28s cubic-bezier(.175,.885,.32,1.275)}
+.ovl.on .sheet{transform:translateY(0)}
+.scl{width:100%;margin-top:10px;padding:11px;border-radius:12px;background:var(--dim);border:1px solid var(--bdr);color:var(--mut);font-size:12px;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif}
+.dgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.dbtn{padding:14px 8px;border-radius:13px;border:1px solid var(--bdr2);background:var(--card);cursor:pointer;text-align:center;transition:all .15s}
+.dbtn:active{transform:scale(.93);border-color:var(--acc)}
+.dico{font-size:24px;display:block;margin-bottom:5px}
+.dlbl{font-size:12px;font-weight:700;color:var(--txt);display:block}
+.dsub{font-size:9px;color:var(--mut);margin-top:2px;display:block}
+
+/* PRO */
+.probadge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:50px;background:linear-gradient(135deg,#FFD60A,#FF6B35);color:#000;font-size:8px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+.ppills{display:flex;gap:8px;margin-bottom:16px}
+.ppill{flex:1;padding:12px 8px;border-radius:13px;border:2px solid var(--bdr2);text-align:center;cursor:pointer;transition:all .18s;position:relative}
+.ppill.sel{border-color:var(--yel);background:rgba(255,214,10,.07)}
+.ppillsv{position:absolute;top:-8px;left:50%;transform:translateX(-50%);padding:2px 8px;border-radius:50px;background:var(--grn);color:#000;font-size:9px;font-weight:800;white-space:nowrap}
+.ctabtn{width:100%;padding:14px;border-radius:13px;background:linear-gradient(135deg,#FFD60A,#FF6B35);color:#000;font-size:14px;font-weight:800;border:none;cursor:pointer;font-family:'Syne',sans-serif;transition:transform .15s}
+.ctabtn:active{transform:scale(.97)}
+
+/* SEARCH */
+.sinp{width:100%;background:var(--card);border:1px solid var(--bdr2);border-radius:11px;padding:9px 13px;font-size:13px;color:var(--txt);outline:none;font-family:'DM Sans',sans-serif}
+.sinp:focus{border-color:var(--acc)}
+.sinp::placeholder{color:var(--mut)}
+
+/* EMPTY */
+.empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:50px 24px;gap:10px;text-align:center;flex:1}
+.eico{font-size:44px}.ettl{font-size:14px;font-weight:700;color:rgba(255,255,255,.4)}.esub{font-size:12px;color:var(--mut);line-height:1.6}
+
+/* TOAST */
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(12px);background:rgba(20,20,40,.97);border:1px solid var(--bdr2);border-radius:12px;padding:9px 18px;font-size:12px;font-weight:600;color:#fff;z-index:999;opacity:0;transition:all .22s;pointer-events:none;white-space:nowrap;backdrop-filter:blur(10px)}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* SECTION HEADER */
+.shdr{padding:11px 13px 4px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.sttl{font-size:14px;font-weight:900;color:var(--txt);font-family:'Syne',sans-serif}
+.sact{font-size:11px;color:var(--acc);cursor:pointer;font-weight:700}
+.ssub{font-size:10px;color:var(--mut)}
+
+/* CITY PICKER */
+.citem{padding:12px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--bdr);cursor:pointer;transition:background .15s}
+.citem:active{background:rgba(255,107,53,.07)}
+
+/* ANIMATIONS */
+@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pi{from{opacity:0;transform:scale(.82)}to{opacity:1;transform:scale(1)}}
+.fu{animation:fu .24s ease}
+.pi{animation:pi .24s cubic-bezier(.175,.885,.32,1.275)}
+
+/* ACHIEVEMENT CELEBRATE */
+.acovl{position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:500;display:flex;align-items:center;justify-content:center;max-width:480px;margin:0 auto;opacity:0;pointer-events:none;transition:opacity .25s}
+.acovl.on{opacity:1;pointer-events:all}
+.accard{background:var(--surf);border-radius:24px;padding:30px 22px;width:calc(100% - 40px);max-width:340px;text-align:center;border:1px solid rgba(255,214,10,.3)}
+.confetti-piece{position:fixed;width:8px;height:8px;border-radius:2px;animation:confettiFall linear forwards;pointer-events:none;z-index:501}
+@keyframes confettiFall{from{transform:translateY(-20px) rotate(0deg);opacity:1}to{transform:translateY(105vh) rotate(720deg);opacity:0}}
+</style>
+</head>
+<body>
+<div id="app">
+  <div class="hdr">
+    <div class="logo-wrap">
+      <div class="logo syne">HUNGER<b>HERO</b></div>
+      <div class="logo-sub" id="logoSub">Österreich · Food Discovery</div>
+    </div>
+    <div class="hdr-btns">
+      <div class="hb" id="undoBtn" onclick="undoLast()" style="display:none" title="Rückgängig">↩</div>
+      <div class="hb" onclick="setTab('fridge')" title="Kühlschrank">🧊</div>
+      <div class="hb" id="searchBtn" onclick="toggleSearch()" title="Suchen">🔍</div>
+      <div class="hb" onclick="setTab('profile')" title="Profil">👤</div>
+      <div class="hb pro" id="proBtn" onclick="openPaywall()" title="Pro">⭐</div>
+    </div>
+  </div>
+
+  <div class="loc" onclick="openCityPicker()">
+    <div class="loc-dot off live" id="locDot"></div>
+    <div class="loc-txt">📍 <span class="loc-city" id="locCity">Standort ermitteln...</span> <span id="locState"></span></div>
+    <div class="loc-arr">▾</div>
+  </div>
+
+  <div class="tabs" id="tabs">
+    <div class="tab on" onclick="setTab('mood')" id="tab-mood"><span class="ti">🧠</span>Mood</div>
+    <div class="tab" onclick="setTab('swipe')" id="tab-swipe"><span class="ti">⚡</span>Swipe</div>
+    <div class="tab" onclick="setTab('favs')" id="tab-favs"><span class="ti">❤️</span>Favs</div>
+    <div class="tab" onclick="setTab('health')" id="tab-health"><span class="ti">💚</span>Health</div>
+    <div class="tab" onclick="setTab('social')" id="tab-social"><span class="ti">👥</span>Social</div>
+    <div class="tab" onclick="setTab('plan')" id="tab-plan"><span class="ti">📅</span>Plan</div>
+  </div>
+
+  <div id="view"></div>
+</div>
+
+<!-- DECISION MODAL -->
+<div class="ovl" id="decOvl" onclick="if(event.target===this)closeModal('decOvl')">
+  <div class="sheet">
+    <div style="font-size:18px;font-weight:900;font-family:'Syne',sans-serif;margin-bottom:2px" id="decTitle"></div>
+    <div style="font-size:11px;color:var(--mut);margin-bottom:12px" id="decLoc"></div>
+    <div class="dgrid" id="decGrid"></div>
+    <button class="scl" onclick="closeModal('decOvl')">Schließen</button>
+  </div>
+</div>
+
+<!-- PRICE COMPARE -->
+<div class="ovl" id="priceOvl" onclick="if(event.target===this)closeModal('priceOvl')">
+  <div class="sheet" id="priceSheet"></div>
+</div>
+
+<!-- PAYWALL -->
+<div class="ovl" id="pwOvl" onclick="if(event.target===this)closeModal('pwOvl')">
+  <div class="sheet" style="padding-bottom:42px">
+    <div style="text-align:center;font-size:38px;margin-bottom:8px">👑</div>
+    <div class="syne" style="text-align:center;font-size:19px;font-weight:900;margin-bottom:4px">HUNGER<span style="color:var(--yel)">HERO</span> Pro</div>
+    <div style="text-align:center;font-size:12px;color:var(--mut);margin-bottom:16px;line-height:1.5">Dein persönlicher Food-Coach für ganz Österreich</div>
+    <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px" id="pwFeatures"></div>
+    <div class="ppills">
+      <div class="ppill" id="pill-mo" onclick="selPlan('mo')">
+        <span style="font-size:16px;font-weight:900;color:#fff;display:block">€3,99</span>
+        <span style="font-size:10px;color:var(--mut);display:block;margin-top:2px">pro Monat</span>
+      </div>
+      <div class="ppill sel" id="pill-yr" onclick="selPlan('yr')">
+        <span class="ppillsv">SPARE 37%</span>
+        <span style="font-size:16px;font-weight:900;color:#fff;display:block">€29,99</span>
+        <span style="font-size:10px;color:var(--mut);display:block;margin-top:2px">pro Jahr</span>
+      </div>
+    </div>
+    <button class="ctabtn syne" onclick="activatePro()">Pro freischalten ✦</button>
+    <div style="text-align:center;margin-top:10px;font-size:10px;color:var(--mut);cursor:pointer" onclick="closeModal('pwOvl')">Vielleicht später</div>
+  </div>
+</div>
+
+<!-- CITY PICKER -->
+<div class="ovl" id="cityOvl" onclick="if(event.target===this)closeModal('cityOvl')">
+  <div class="sheet" style="padding-bottom:30px">
+    <div class="syne" style="font-size:16px;font-weight:900;margin-bottom:10px">📍 Stadt wählen</div>
+    <input class="sinp" id="cityQ" placeholder="Stadt suchen..." oninput="filterCities(this.value)" style="margin-bottom:10px;display:block">
+    <div style="max-height:320px;overflow-y:auto" id="cityList"></div>
+    <button class="scl" onclick="closeModal('cityOvl')">Schließen</button>
+  </div>
+</div>
+
+<!-- RESTAURANT INFO -->
+<div class="ovl" id="rstOvl" onclick="if(event.target===this)closeModal('rstOvl')">
+  <div class="sheet" id="rstSheet" style="max-height:88vh;overflow-y:auto;padding-bottom:36px"></div>
+</div>
+
+<!-- ACHIEVEMENT -->
+<div class="acovl" id="acOvl">
+  <div class="accard" id="acCard"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── UTILITY ──────────────────────────────────────────────────────────────────
+const $ = id => document.getElementById(id);
+const ls = (k, d=null) => { try { const v=localStorage.getItem(k); return v?JSON.parse(v):d; } catch{ return d; }};
+const save = (k,v) => { try{ localStorage.setItem(k,JSON.stringify(v)); }catch{} };
+const p = n => n.toFixed(2).replace('.',',');
+const fmtP = n => '€'+p(n);
+let _tt; 
+function toast(m,d=2200){ const t=$('toast'); t.textContent=m; t.classList.add('on'); clearTimeout(_tt); _tt=setTimeout(()=>t.classList.remove('on'),d); }
+
+// ─── AUSTRIA CITIES ───────────────────────────────────────────────────────────
+const CITIES = [
+  {n:'Wien',s:'Wien',lat:48.2082,lng:16.3738,e:'🏙️',w:'wien'},
+  {n:'Graz',s:'Steiermark',lat:47.0707,lng:15.4395,e:'🦅',w:'graz'},
+  {n:'Linz',s:'Oberösterreich',lat:48.3064,lng:14.2858,e:'🏭',w:'linz'},
+  {n:'Salzburg',s:'Salzburg',lat:47.8095,lng:13.0550,e:'🎵',w:'salzburg'},
+  {n:'Innsbruck',s:'Tirol',lat:47.2692,lng:11.4041,e:'🏔️',w:'innsbruck'},
+  {n:'Klagenfurt',s:'Kärnten',lat:46.6233,lng:14.3050,e:'🏖️',w:'klagenfurt'},
+  {n:'Villach',s:'Kärnten',lat:46.6111,lng:13.8558,e:'🌊',w:'villach'},
+  {n:'Wels',s:'Oberösterreich',lat:48.1574,lng:14.0285,e:'🌾',w:'wels'},
+  {n:'St. Pölten',s:'Niederösterreich',lat:48.2043,lng:15.6229,e:'🏛️',w:'st-polten'},
+  {n:'Dornbirn',s:'Vorarlberg',lat:47.4125,lng:9.7417,e:'🌿',w:'dornbirn'},
+  {n:'Wiener Neustadt',s:'Niederösterreich',lat:47.8067,lng:16.2405,e:'⚔️',w:'wiener-neustadt'},
+  {n:'Steyr',s:'Oberösterreich',lat:48.0436,lng:14.4208,e:'🔩',w:'steyr'},
+  {n:'Feldkirch',s:'Vorarlberg',lat:47.2333,lng:9.6000,e:'🏰',w:'feldkirch'},
+  {n:'Bregenz',s:'Vorarlberg',lat:47.5031,lng:9.7471,e:'🎭',w:'bregenz'},
+  {n:'Baden',s:'Niederösterreich',lat:48.0025,lng:16.2320,e:'💧',w:'baden'},
+  {n:'Leoben',s:'Steiermark',lat:47.3828,lng:15.0944,e:'⛏️',w:'leoben'},
+  {n:'Krems',s:'Niederösterreich',lat:48.4100,lng:15.6140,e:'🍷',w:'krems'},
+  {n:'Spittal',s:'Kärnten',lat:46.7997,lng:13.4956,e:'🏔️',w:'spittal'},
+  {n:'Kufstein',s:'Tirol',lat:47.5836,lng:12.1668,e:'🏯',w:'kufstein'},
+  {n:'Wolfsberg',s:'Kärnten',lat:46.8333,lng:14.8333,e:'🐺',w:'wolfsberg'},
+];
+
+let city = ls('hh_city', CITIES[0]);
+let loc = {lat: city.lat, lng: city.lng};
+
+function initLoc(){
+  updateLocBar(city);
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(pos=>{
+      loc={lat:pos.coords.latitude,lng:pos.coords.longitude};
+      let best=CITIES[0], md=9999;
+      CITIES.forEach(c=>{ const d=Math.hypot(c.lat-loc.lat,c.lng-loc.lng); if(d<md){md=d;best=c;} });
+      city=best; save('hh_city',city);
+      updateLocBar(city);
+    }, ()=>updateLocBar(city), {timeout:7000});
+  }
+}
+function updateLocBar(c){
+  $('locDot').className='loc-dot live'+(c?'':' off');
+  $('locCity').textContent=c.n;
+  $('locState').textContent='· '+c.s;
+  $('logoSub').textContent=c.n+' · Österreich';
+  loc={lat:c.lat,lng:c.lng};
+}
+function openCityPicker(){ renderCityList(''); $('cityOvl').classList.add('on'); setTimeout(()=>$('cityQ').focus(),300); }
+function filterCities(q){ renderCityList(q); }
+function renderCityList(q){
+  const f=q?CITIES.filter(c=>c.n.toLowerCase().includes(q.toLowerCase())||c.s.toLowerCase().includes(q.toLowerCase())):CITIES;
+  $('cityList').innerHTML = f.map(c=>`<div class="citem" onclick="pickCity(${CITIES.indexOf(c)})">
+    <span style="font-size:20px;flex-shrink:0">${c.e}</span>
+    <div style="flex:1"><div style="font-size:13px;font-weight:700;color:var(--txt)">${c.n}</div><div style="font-size:11px;color:var(--mut)">${c.s}</div></div>
+    ${c.n===city.n?'<span style="color:var(--acc);font-size:16px">✓</span>':''}
+  </div>`).join('');
+}
+function pickCity(i){ city=CITIES[i]; save('hh_city',city); updateLocBar(city); closeModal('cityOvl'); toast('📍 '+city.n+' gewählt'); if(CT==='swipe')renderSwipe(); }
+
+// ─── FOOD DATA 50 DISHES ──────────────────────────────────────────────────────
+const F=[
+  {id:1,n:"Tonkotsu Ramen",c:"Japanese",e:"🍜",kcal:780,p:13.5,t:"25min",tags:["comfort","rich"],diet:[],d:"18-Stunden Schweineknochenfond, Chashu, Ei, Bambussprossen",r:4.9,v:891,bg:"#0d0900",m:["müde","kalt","komfort","hangover"],ing:["Ramen-Nudeln","Schweinebauch","Eier","Bambussprossen","Nori","Frühlingszwiebeln"]},
+  {id:2,n:"Smash Burger",c:"American",e:"🍔",kcal:890,p:12.9,t:"15min",tags:["indulgent","fast"],diet:[],d:"Double Smash Patty, American Cheese, Pickles, Special Sauce",r:4.7,v:654,bg:"#0d0200",m:["hungrig","hangover","cheat day"],ing:["Hackfleisch","Käse","Brioche","Gurken","Zwiebeln","Salat"]},
+  {id:3,n:"Pad Thai",c:"Thai",e:"🌶️",kcal:540,p:10.9,t:"20min",tags:["fresh","spicy"],diet:[],d:"Reisnudeln, Tigergarnelen, Tamarinde, Erdnüsse, Limette",r:4.6,v:428,bg:"#0d0500",m:["hungrig","date night","spicy kick"],ing:["Reisnudeln","Garnelen","Eier","Erdnüsse","Frühlingszwiebeln","Limette"]},
+  {id:4,n:"Margherita DOC",c:"Italian",e:"🍕",kcal:720,p:13.0,t:"22min",tags:["classic","comfort"],diet:["vegetarian"],d:"San Marzano Tomate, Büffelmozzarella DOP, Basilikum",r:4.8,v:1204,bg:"#000d0c",m:["komfort","familie","movie night"],ing:["Pizzateig","Tomatensoße","Mozzarella","Basilikum","Olivenöl"]},
+  {id:5,n:"Butter Chicken",c:"Indian",e:"🍗",kcal:680,p:11.9,t:"25min",tags:["comfort","rich"],diet:["gluten-free"],d:"Tandoori Chicken, Tomaten-Sahnesoße, Bockshornklee, Naan",r:4.8,v:891,bg:"#0d0700",m:["kalt","komfort","hungrig"],ing:["Hühnchen","Tomaten","Sahne","Zwiebeln","Knoblauch","Ingwer","Naan"]},
+  {id:6,n:"Wiener Schnitzel",c:"Austrian",e:"🥩",kcal:890,p:14.9,t:"25min",tags:["classic","comfort"],diet:[],d:"Paniertes Kalbfleisch, Preiselbeeren, Erdäpfelsalat, Zitrone",r:4.9,v:1567,bg:"#0d0800",m:["klassisch","hungrig","nach hause kommen"],ing:["Kalbfleisch","Eier","Mehl","Semmelbrösel","Butter","Zitrone","Kartoffeln"]},
+  {id:7,n:"Poke Bowl",c:"Hawaiian",e:"🐠",kcal:540,p:12.9,t:"10min",tags:["fresh","healthy"],diet:["gluten-free"],d:"Lachs, Sushireis, Edamame, Mango, Gurke, Sesam",r:4.8,v:678,bg:"#0d0400",m:["nach sport","gesund","leicht"],ing:["Lachs","Reis","Avocado","Edamame","Mango","Gurke","Sesam"]},
+  {id:8,n:"Tacos al Pastor",c:"Mexican",e:"🌮",kcal:580,p:9.9,t:"15min",tags:["trending","spicy"],diet:[],d:"Mariniertes Schweinefleisch, Ananas, Koriander, Maistortillas",r:4.8,v:678,bg:"#0d0500",m:["party","snack","hungrig"],ing:["Schweinefleisch","Tortillas","Ananas","Zwiebeln","Koriander","Limette"]},
+  {id:9,n:"Acai Bowl",c:"Brazilian",e:"🫐",kcal:380,p:9.9,t:"10min",tags:["healthy","fresh"],diet:["vegan","gluten-free"],d:"Wilder Acai, Granola, Banane, Kokosflocken, Agave",r:4.6,v:231,bg:"#00050d",m:["morgen","nach sport","leicht"],ing:["Acai","Granola","Banane","Kokosmilch","Beeren"]},
+  {id:10,n:"Bibimbap",c:"Korean",e:"🥗",kcal:620,p:11.9,t:"18min",tags:["fresh","healthy"],diet:["vegan"],d:"Gebratenes Gemüse, Reis, Gochujang, Sesamöl",r:4.6,v:289,bg:"#0d0004",m:["gesund","hungrig","veggie"],ing:["Reis","Karotten","Spinat","Pilze","Eier","Gochujang","Sesamöl"]},
+  {id:11,n:"Falafel Wrap",c:"Lebanese",e:"🧆",kcal:480,p:8.9,t:"12min",tags:["fresh","healthy"],diet:["vegan"],d:"Knusprige Falafel, Hummus, Tabbouleh, Tahini",r:4.5,v:344,bg:"#000d07",m:["günstig","schnell","veggie"],ing:["Kichererbsen","Petersilie","Knoblauch","Zwiebeln","Pita","Hummus","Tahini"]},
+  {id:12,n:"Pasta Carbonara",c:"Italian",e:"🍝",kcal:820,p:12.5,t:"18min",tags:["comfort","rich"],diet:[],d:"Spaghetti, Guanciale, Pecorino, Eigelb, schwarzer Pfeffer",r:4.9,v:934,bg:"#0d0b00",m:["komfort","hangover","movie night"],ing:["Spaghetti","Eier","Parmesan","Speck","Knoblauch","Pfeffer"]},
+  {id:13,n:"Ceviche",c:"Peruvian",e:"🐟",kcal:320,p:11.9,t:"5min",tags:["fresh","healthy"],diet:["gluten-free"],d:"Tigersmilch, Wolfsbarsch, Rote Zwiebeln, Mais, Süßkartoffel",r:4.8,v:389,bg:"#0d0400",m:["date night","sommer","leicht"],ing:["Fisch","Limette","Zwiebeln","Koriander","Chili","Mais"]},
+  {id:14,n:"Shakshuka",c:"Israeli",e:"🍳",kcal:380,p:9.5,t:"15min",tags:["fresh","vegetarian"],diet:["vegetarian","gluten-free"],d:"Pochierte Eier in gewürzter Tomatensoße, Feta, Kräuter",r:4.7,v:378,bg:"#0d0000",m:["morgen","brunch","veggie"],ing:["Eier","Tomaten","Zwiebeln","Paprika","Feta","Knoblauch"]},
+  {id:15,n:"Sushi Platter",c:"Japanese",e:"🍣",kcal:480,p:16.9,t:"35min",tags:["classic","fresh"],diet:["gluten-free"],d:"Lachs, Thunfisch, Gelbschwanz, Gurken Maki, Tamago",r:4.8,v:1023,bg:"#0d0005",m:["date night","special","teilen"],ing:["Reis","Lachs","Thunfisch","Nori","Wasabi","Ingwer","Sojasauce"]},
+  {id:16,n:"Katsu Curry",c:"Japanese",e:"🍛",kcal:820,p:12.9,t:"22min",tags:["comfort","classic"],diet:[],d:"Paniertes Schweinekotelett, Curry-Sauce, eingelegter Kohl",r:4.8,v:567,bg:"#0d0700",m:["kalt","komfort","hungrig"],ing:["Schweinefleisch","Semmelbrösel","Eier","Mehl","Kartoffeln","Karotten"]},
+  {id:17,n:"BBQ Ribs",c:"American",e:"🍖",kcal:1200,p:18.9,t:"40min",tags:["indulgent","sharing"],diet:["gluten-free"],d:"Langsam geräucherte Spareribs, Bourbon BBQ, Coleslaw",r:4.8,v:489,bg:"#0d0500",m:["cheat day","teilen","wochenende"],ing:["Ribs","BBQ-Soße","Kohl","Karotten","Zwiebeln"]},
+  {id:18,n:"Green Curry",c:"Thai",e:"🍲",kcal:580,p:11.9,t:"20min",tags:["spicy","rich"],diet:["vegan"],d:"Grüne Curry-Paste, Kokosmilch, Tofu, Aubergine, Bambus",r:4.6,v:312,bg:"#000d02",m:["veggie","spicy kick","kalt"],ing:["Kokosmilch","Grüne Currypaste","Tofu","Aubergine","Paprika","Reis"]},
+  {id:19,n:"Eggs Benedict",c:"American",e:"🥚",kcal:640,p:10.9,t:"18min",tags:["brunch","classic"],diet:[],d:"Pochierte Eier, Bacon, Sauce Hollandaise, English Muffin",r:4.8,v:567,bg:"#0d0b00",m:["morgen","brunch","wochenende"],ing:["Eier","Speck","Butter","Zitrone","English Muffin"]},
+  {id:20,n:"Beef Bulgogi Bowl",c:"Korean",e:"🥩",kcal:580,p:12.5,t:"18min",tags:["trending","sweet"],diet:["gluten-free"],d:"Gegrilltes mariniertes Rindfleisch, Sesam, Birne, Knoblauch",r:4.7,v:389,bg:"#0d0000",m:["hungrig","nach sport","proteinreich"],ing:["Rindfleisch","Sojasauce","Sesam","Knoblauch","Ingwer","Reis"]},
+  {id:21,n:"Goulash",c:"Austrian",e:"🥘",kcal:680,p:12.5,t:"30min",tags:["comfort","classic"],diet:["gluten-free"],d:"Rindfleisch, Paprika, Zwiebeln, Kümmel, Semmelknödel",r:4.7,v:456,bg:"#0d0000",m:["kalt","komfort","nach hause kommen"],ing:["Rindfleisch","Zwiebeln","Paprikapulver","Kartoffeln","Kümmel"]},
+  {id:22,n:"Buddha Bowl",c:"Fusion",e:"🥗",kcal:480,p:10.9,t:"12min",tags:["healthy","vegan"],diet:["vegan","gluten-free"],d:"Geröstetes Gemüse, Falafel, Quinoa, Tahini, Avocado",r:4.7,v:456,bg:"#000d02",m:["gesund","nach sport","veggie"],ing:["Quinoa","Avocado","Kichererbsen","Süßkartoffel","Spinat","Tahini"]},
+  {id:23,n:"Dim Sum Set",c:"Cantonese",e:"🥟",kcal:560,p:14.9,t:"30min",tags:["sharing","classic"],diet:[],d:"Har Gow, Siu Mai, Char Siu Bao, Chiliöl",r:4.9,v:789,bg:"#06000d",m:["teilen","wochenende","special"],ing:["Weizenstärke","Garnelen","Schweinefleisch","Ingwer","Sesamöl"]},
+  {id:24,n:"Bánh Mì",c:"Vietnamese",e:"🥖",kcal:520,p:8.5,t:"12min",tags:["trending","fast"],diet:[],d:"Schweinebauch, Pastete, eingelegte Karotten, Jalapeño, Koriander",r:4.8,v:445,bg:"#0d0400",m:["schnell","hungrig","günstig"],ing:["Baguette","Schweinefleisch","Karotten","Gurke","Koriander","Jalapeño"]},
+  {id:25,n:"Risotto ai Funghi",c:"Italian",e:"🍄",kcal:640,p:13.5,t:"30min",tags:["comfort","vegetarian"],diet:["vegetarian","gluten-free"],d:"Arborio-Reis, Porcini, Parmesan, Trüffelöl",r:4.7,v:389,bg:"#060300",m:["date night","veggie","komfort"],ing:["Arborio-Reis","Pilze","Parmesan","Zwiebeln","Weißwein","Butter"]},
+  {id:26,n:"Nashville Hot Chicken",c:"American",e:"🍗",kcal:820,p:12.5,t:"20min",tags:["spicy","trending"],diet:[],d:"Cayenne-getränktes Fried Chicken, Dill-Pickle, Brioche",r:4.8,v:345,bg:"#0d0300",m:["spicy kick","cheat day","hungrig"],ing:["Hühnchen","Cayenne","Buttermilch","Mehl","Brioche","Gurken"]},
+  {id:27,n:"Mango Sticky Rice",c:"Thai",e:"🥭",kcal:420,p:6.5,t:"5min",tags:["sweet","classic"],diet:["vegan","gluten-free"],d:"Klebreis, frische Mango, Kokosmilch-Karamell",r:4.8,v:389,bg:"#0d0b00",m:["dessert","sommer","süß"],ing:["Klebreis","Mango","Kokosmilch","Zucker"]},
+  {id:28,n:"Käsespätzle",c:"Austrian",e:"🧀",kcal:780,p:11.9,t:"20min",tags:["comfort","vegetarian"],diet:["vegetarian"],d:"Weiche Eiernudeln, Bergkäse, geröstete Zwiebeln",r:4.8,v:567,bg:"#0d0b00",m:["kalt","komfort","klassisch"],ing:["Mehl","Eier","Käse","Zwiebeln","Butter"]},
+  {id:29,n:"Pho Bo",c:"Vietnamese",e:"🥣",kcal:490,p:11.5,t:"22min",tags:["comfort","healthy"],diet:["gluten-free"],d:"Rinderknochenfond, Reisnudeln, Rindfleisch, Sojasprossen",r:4.8,v:445,bg:"#0d0800",m:["krank","kalt","leicht"],ing:["Reisnudeln","Rindfleisch","Ingwer","Sternanis","Frühlingszwiebeln"]},
+  {id:30,n:"Peking Duck Wrap",c:"Chinese",e:"🦆",kcal:580,p:14.9,t:"25min",tags:["classic","rich"],diet:[],d:"Knusprige Ente, Hoisin, Gurke, Frühlingszwiebel",r:4.9,v:456,bg:"#0d0300",m:["date night","special","teilen"],ing:["Ente","Hoisin-Soße","Gurke","Frühlingszwiebeln","Pfannkuchen"]},
+  {id:31,n:"Döner Kebab",c:"Turkish",e:"🫔",kcal:720,p:6.9,t:"8min",tags:["fast","classic"],diet:[],d:"Kalb & Lamm, Salat, Knoblauchsoße, Fladenbrot, Sumach",r:4.6,v:789,bg:"#0d0700",m:["schnell","günstig","hungrig","hangover"],ing:["Kalbfleisch","Lammfleisch","Fladenbrot","Salat","Tomate","Knoblauchsoße"]},
+  {id:32,n:"Avocado Toast",c:"Australian",e:"🥑",kcal:380,p:8.9,t:"8min",tags:["fresh","trending"],diet:["vegan"],d:"Zerdrückte Avo, Sauerteig, Za'atar, Chiliflocken",r:4.5,v:567,bg:"#000d02",m:["morgen","brunch","leicht"],ing:["Avocado","Sauerteigbrot","Zitrone","Chiliflocken","Olivenöl"]},
+  {id:33,n:"Wagyu Burger",c:"American",e:"🍔",kcal:980,p:16.9,t:"18min",tags:["indulgent","trending"],diet:[],d:"A5 Wagyu Patty, Foie Gras, Schwarztrüffel-Aioli, Brioche",r:4.9,v:234,bg:"#060300",m:["cheat day","special","wochenende"],ing:["Wagyu-Rindfleisch","Brioche","Trüffelöl","Käse","Salat","Zwiebeln"]},
+  {id:34,n:"Korean Fried Chicken",c:"Korean",e:"🍗",kcal:820,p:13.5,t:"18min",tags:["trending","spicy"],diet:[],d:"Doppelt frittiertes Chicken, Gochujang, Kimchi-Slaw",r:4.8,v:389,bg:"#0d0005",m:["spicy kick","trending","hungrig"],ing:["Hühnchen","Gochujang","Kimchi","Buttermilch","Mehl","Knoblauch"]},
+  {id:35,n:"Beef Wellington",c:"British",e:"🥩",kcal:890,p:22.9,t:"45min",tags:["indulgent","classic"],diet:[],d:"Rinderfilet, Pilz-Duxelles, Prosciutto, Blätterteig",r:4.9,v:178,bg:"#060300",m:["special","date night","wochenende"],ing:["Rinderfilet","Blätterteig","Pilze","Prosciutto","Senf","Eier"]},
+  {id:36,n:"Spicy Hot Pot",c:"Sichuan",e:"🫕",kcal:680,p:15.9,t:"35min",tags:["spicy","sharing"],diet:["gluten-free"],d:"Mala-Brühe, Wagyu, Lotus, Tofu, Glasnudeln",r:4.8,v:312,bg:"#0d0000",m:["teilen","spicy kick","kalt"],ing:["Rindfleisch","Tofu","Glasnudeln","Pilze","Lotuswurzel","Sichuan-Pfeffer"]},
+  {id:37,n:"Tiramisu",c:"Italian",e:"🍮",kcal:520,p:7.9,t:"5min",tags:["sweet","classic"],diet:["vegetarian"],d:"Mascarpone-Creme, Savoiardi, Espresso, Kakao",r:4.9,v:823,bg:"#050200",m:["dessert","date night","süß"],ing:["Mascarpone","Eier","Zucker","Espresso","Savoiardi","Kakao"]},
+  {id:38,n:"Lamb Tagine",c:"Moroccan",e:"🫕",kcal:720,p:14.9,t:"40min",tags:["comfort","rich"],diet:["gluten-free"],d:"Geschmortes Lamm, Aprikosen, Mandeln, Ras el Hanout, Couscous",r:4.8,v:267,bg:"#0d0700",m:["kalt","komfort","special"],ing:["Lamm","Couscous","Aprikosen","Mandeln","Zwiebeln","Gewürze"]},
+  {id:39,n:"Churrasco",c:"Brazilian",e:"🥩",kcal:980,p:16.9,t:"30min",tags:["rich","classic"],diet:["gluten-free"],d:"Picanha Steak, Chimichurri, Farofa, Schwarze Bohnen, Reis",r:4.8,v:456,bg:"#0d0000",m:["hungrig","wochenende","proteinreich"],ing:["Rindfleisch","Knoblauch","Petersilie","Zitrone","Bohnen","Reis"]},
+  {id:40,n:"Dosa Masala",c:"South Indian",e:"🥞",kcal:420,p:9.5,t:"20min",tags:["light","vegetarian"],diet:["vegan","gluten-free"],d:"Knusprige Reiscrêpe, Kartoffelfüllung, Sambar, Chutneys",r:4.6,v:312,bg:"#0d0a00",m:["veggie","günstig","leicht"],ing:["Reis","Linsen","Kartoffeln","Zwiebeln","Senfsamen"]},
+  {id:41,n:"Hainanese Chicken",c:"Singaporean",e:"🍗",kcal:540,p:10.9,t:"20min",tags:["classic","comfort"],diet:["gluten-free"],d:"Pochiertes Hühnchen, Duftreis, Ingwer-Frühlingszwiebel",r:4.8,v:345,bg:"#000d01",m:["krank","leicht","komfort"],ing:["Hühnchen","Reis","Ingwer","Knoblauch","Frühlingszwiebeln"]},
+  {id:42,n:"French Onion Soup",c:"French",e:"🧅",kcal:420,p:9.9,t:"20min",tags:["comfort","classic"],diet:["vegetarian"],d:"Karamellisierte Zwiebelbrühe, Gruyère-Croûton, überbacken",r:4.8,v:345,bg:"#050200",m:["kalt","krank","komfort"],ing:["Zwiebeln","Butter","Rinderbrühe","Weißwein","Baguette","Gruyère"]},
+  {id:43,n:"Biryani Hyderabadi",c:"Indian",e:"🍚",kcal:780,p:13.9,t:"35min",tags:["classic","rich"],diet:[],d:"Basmatireis, Hühnchen, Safran, Röstzwiebeln, Raita",r:4.8,v:678,bg:"#0d0700",m:["hungrig","teilen","special"],ing:["Basmatireis","Hühnchen","Joghurt","Safran","Zwiebeln","Gewürzmischung"]},
+  {id:44,n:"Churros & Schokolade",c:"Spanish",e:"🍫",kcal:480,p:6.9,t:"10min",tags:["sweet","comfort"],diet:["vegan"],d:"Frittierte Teigstangen, Zimtzucker, Trinkschokolade",r:4.7,v:489,bg:"#060300",m:["dessert","kalt","süß"],ing:["Mehl","Wasser","Öl","Zucker","Zimt","Schokolade"]},
+  {id:45,n:"Vegan Ramen",c:"Japanese",e:"🍜",kcal:480,p:11.9,t:"22min",tags:["vegan","comfort"],diet:["vegan"],d:"Kombu-Shiitake Dashi, Tofu, Pilze, Mais, Nori",r:4.6,v:267,bg:"#000d01",m:["veggie","kalt","komfort"],ing:["Reisnudeln","Tofu","Shiitake","Kombu","Mais","Nori"]},
+  {id:46,n:"Crème Brûlée",c:"French",e:"🍮",kcal:420,p:7.9,t:"5min",tags:["sweet","classic"],diet:["vegetarian","gluten-free"],d:"Seidiger Vanillecustard, karamellisierte Zuckerkruste",r:4.9,v:567,bg:"#0d0b00",m:["dessert","date night","special"],ing:["Sahne","Eier","Vanille","Zucker"]},
+  {id:47,n:"Jerk Chicken",c:"Jamaican",e:"🍗",kcal:620,p:12.9,t:"25min",tags:["spicy","trending"],diet:["gluten-free"],d:"Scotch Bonnet mariniertes Hühnchen, Reis & Bohnen, Kochbanane",r:4.7,v:267,bg:"#0d0200",m:["spicy kick","hungrig","wochenende"],ing:["Hühnchen","Scotch Bonnet","Thymian","Rum","Reis","Bohnen"]},
+  {id:48,n:"Lobster Roll",c:"American",e:"🦞",kcal:560,p:19.9,t:"15min",tags:["indulgent","fresh"],diet:[],d:"Maine Hummer, Butter, Zitrone, geröstetes Milchbrötchen",r:4.9,v:267,bg:"#0d0400",m:["special","date night","sommer"],ing:["Hummer","Butter","Zitrone","Mayonnaise","Sellerie","Brioche"]},
+  {id:49,n:"Crêpes Suzette",c:"French",e:"🥞",kcal:440,p:8.9,t:"12min",tags:["sweet","classic"],diet:["vegetarian"],d:"Dünne Pfannkuchen, Orangenbutter, Grand Marnier, flambiert",r:4.8,v:312,bg:"#0d0500",m:["dessert","brunch","süß"],ing:["Mehl","Eier","Milch","Butter","Orangen","Zucker"]},
+  {id:50,n:"Flammkuchen",c:"Austrian",e:"🫓",kcal:580,p:10.9,t:"18min",tags:["classic","comfort"],diet:["vegetarian"],d:"Dünn ausgerollter Teig, Crème fraîche, Zwiebeln, Speck",r:4.7,v:445,bg:"#0d0800",m:["teilen","abend","klassisch"],ing:["Mehl","Crème fraîche","Zwiebeln","Speck","Thymian"]},
+];
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let CT='mood'; // current tab
+let pro = ls('hh_pro',false);
+let profile = ls('hh_profile',{sw:0,lk:0,tags:{},cuisines:{},shares:0,fridgeScans:0,planCreated:false,logStreak:0,waterStreak:0,isPro:false});
+let favs = ls('hh_favs',[]);
+let histLog = ls('hh_hist',[]);
+let weekPlan = ls('hh_week',{});
+let mealLog = ls('hh_meals',[]);
+let water = ls('hh_water',{date:'',g:0});
+let watchlist = ls('hh_watchlist',[]);
+let achievedIds = ls('hh_ach',[]);
+let fridgeIngs = ls('hh_fridge',[]);
+let moodFiltered = null;
+let moodStep = 0, moodAns = {};
+let swipeIdx = 0;
+let searchOn = false, searchQ = '';
+let curFood = null;
+const KCAL_GOAL=2000, SPEND_GOAL=70, WATER_GOAL=8;
+
+// ─── HELPERS ──────────────────────────────────────────────────────────────────
+const topK = (obj,n) => Object.entries(obj||{}).sort((a,b)=>b[1]-a[1]).slice(0,n).map(([k])=>k);
+const todayStr = () => new Date().toISOString().split('T')[0];
+const todayMeals = () => mealLog.filter(m=>m.date===todayStr());
+const todayGlasses = () => { if(water.date!==todayStr()){water={date:todayStr(),g:0};} return water.g; };
+
+function closeModal(id){ $(id).classList.remove('on'); }
+function openModal(id){ $(id).classList.add('on'); }
+
+// ─── PRO ──────────────────────────────────────────────────────────────────────
+function openPaywall(){
+  $('pwFeatures').innerHTML=[
+    ['💚','Health Dashboard','Kalorien, Budget, Makros wie Apple Health'],
+    ['🧠','Lernende Mood Engine','Wird mit jedem Swipe smarter'],
+    ['💰','Preisalarm','Push wenn dein Gericht günstiger wird'],
+    ['🧊','Kühlschrank-KI','Rezepte aus vorhandenen Zutaten'],
+    ['📅','Wochenbudget-Planer','7 Tage automatisch geplant & budgetiert'],
+  ].map(([i,t,s])=>`<div style="display:flex;gap:10px;align-items:center;padding:9px 11px;border-radius:11px;background:var(--card);border:1px solid var(--bdr2)">
+    <span style="font-size:18px">${i}</span><div><div style="font-size:12px;font-weight:700;color:#fff">${t}</div><div style="font-size:10px;color:var(--mut);margin-top:1px">${s}</div></div>
+  </div>`).join('');
+  openModal('pwOvl');
+}
+function selPlan(p){ $('pill-mo').classList.toggle('sel',p==='mo'); $('pill-yr').classList.toggle('sel',p==='yr'); }
+function activatePro(){
+  pro=true; profile.isPro=true; save('hh_pro',true); save('hh_profile',profile);
+  closeModal('pwOvl');
+  $('proBtn').innerHTML='👑';
+  $('proBtn').style.background='linear-gradient(135deg,rgba(255,214,10,.35),rgba(255,107,53,.35))';
+  toast('👑 Pro aktiviert! Willkommen 🎉',3000);
+  checkAchievements();
+  if(CT==='health') renderHealth();
+}
+
+// ─── TABS ─────────────────────────────────────────────────────────────────────
+function setTab(t){
+  CT=t;
+  document.querySelectorAll('.tab').forEach(el=>el.classList.remove('on'));
+  const el=$('tab-'+t); if(el) el.classList.add('on');
+  $('undoBtn').style.display=t==='swipe'?'flex':'none';
+  $('searchBtn').style.display=['swipe','favs'].includes(t)?'flex':'none';
+  const renders={mood:renderMood,swipe:renderSwipe,favs:renderFavs,health:renderHealth,social:renderSocial,plan:renderPlan,profile:renderProfile,fridge:renderFridge,history:renderHistory,achieve:renderAchievements};
+  if(renders[t]) renders[t]();
+}
+
+// ─── MOOD ENGINE ──────────────────────────────────────────────────────────────
+const MOOD_QS=[
+  {id:'state',q:'Wie fühlst du dich gerade?',opts:['😤 Hungrig & bereit','😴 Müde & faul','💪 Nach dem Sport','🤒 Eher krank','😊 Einfach gut']},
+  {id:'ctx',q:'Was ist der Anlass?',opts:['🏠 Alleine gemütlich','💑 Date Night','👥 Mit Freunden teilen','⚡ Quick & einfach','🎬 Movie Night']},
+  {id:'budget',q:'Budget heute?',opts:['💶 Unter €10','💵 €10–15','💳 €15+','🤷 Egal']},
+  {id:'vibe',q:'Welchen Vibe willst du?',opts:['🛋️ Comfort Food','🥗 Gesund & leicht','🌶️ Spicy & bold','🌍 Etwas Neues']},
+];
+
+function scoreFood(food, moodStr, prof){
+  let s=0;
+  const tc=topK(prof.cuisines,3), tt=topK(prof.tags,5);
+  if(tc.includes(food.c)) s+=4;
+  tt.forEach(t=>{ if(food.tags.includes(t)) s+=3; });
+  const ms=(moodStr||'').toLowerCase();
+  if(ms.includes('müde')||ms.includes('faul')) if(food.m.includes('komfort')||food.m.includes('hangover')) s+=4;
+  if(ms.includes('sport')) if(food.tags.includes('healthy')||food.m.includes('proteinreich')) s+=5;
+  if(ms.includes('krank')) if(food.m.includes('krank')||food.m.includes('leicht')) s+=6;
+  if(ms.includes('date')) if(food.m.includes('date night')||food.m.includes('special')) s+=5;
+  if(ms.includes('hungrig')&&food.kcal>600) s+=3;
+  if(ms.includes('vegan')&&food.diet.includes('vegan')) s+=5;
+  if(ms.includes('veggie')&&(food.diet.includes('vegan')||food.diet.includes('vegetarian'))) s+=4;
+  if(ms.includes('spicy')&&food.tags.includes('spicy')) s+=4;
+  if(ms.includes('leicht')&&food.kcal<500) s+=3;
+  if(ms.includes('schnell')&&(food.tags.includes('fast')||parseInt(food.t)<15)) s+=4;
+  if(ms.includes('unter €10')&&food.p<10) s+=5;
+  if(ms.includes('€10')&&food.p>=10&&food.p<=15) s+=2;
+  if(ms.includes('neues')&&!tc.includes(food.c)) s+=3;
+  if(ms.includes('teilen')&&food.tags.includes('sharing')) s+=4;
+  if(ms.includes('comfort')&&food.tags.includes('comfort')) s+=4;
+  if(ms.includes('movie')&&food.m.includes('movie night')) s+=4;
+  if(ms.includes('brunch')&&(food.tags.includes('brunch')||food.m.includes('morgen'))) s+=4;
+  s+=Math.random()*.5;
+  return s;
+}
+
+function renderMood(){
+  $('view').innerHTML=`<div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+    <div class="mchat" id="mchat"></div>
+    <div class="mopts" id="mopts"></div>
+    <button class="mgo syne" id="mgo" onclick="setTab('swipe')">Gerichte anzeigen →</button>
+  </div>`;
+  moodStep=0; moodAns={};
+  const chat=$('mchat');
+  if(profile.sw>=3){
+    const tc=topK(profile.cuisines,1)[0], tt=topK(profile.tags,1)[0];
+    aiMsg(chat,'Hey! Schön dich wieder zu sehen 👋',0);
+    aiMsg(chat,`Du liebst meistens <strong>${tc||'alles'}</strong>${tt?' — besonders <strong>'+tt+'</strong>':''}. Hier meine heutigen Top-Picks für ${city.n}:`,700);
+    const picks=F.filter(f=>!favs.find(x=>x.id===f.id)).map(f=>({...f,_s:scoreFood(f,'',profile)})).sort((a,b)=>b._s-a._s).slice(0,3);
+    setTimeout(()=>{
+      const b=document.createElement('div'); b.className='bbl ai fu';
+      b.innerHTML=picks.map((f,i)=>`<div onclick="quickPick(${f.id})" style="display:flex;align-items:center;gap:10px;padding:9px 11px;margin-bottom:${i<2?5:0}px;border-radius:12px;background:rgba(255,107,53,${i===0?.14:.07});border:1px solid rgba(255,107,53,${i===0?.28:.12});cursor:pointer">
+        <span style="font-size:24px">${f.e}</span>
+        <div style="flex:1"><div style="font-size:13px;font-weight:700">${f.n}</div><div style="font-size:10px;color:rgba(255,255,255,.4)">${f.c} · ${fmtP(f.p)} · ⭐${f.r}</div></div>
+        <span style="font-size:10px;color:var(--acc);font-weight:800">#${i+1}</span>
+      </div>`).join('');
+      chat.appendChild(b); chat.scrollTop=chat.scrollHeight;
+      setTimeout(()=>{
+        aiMsg(chat,'Passt das — oder lieber gezielt fragen?',0);
+        setTimeout(()=>{ $('mopts').innerHTML=
+          `<div class="mopt" onclick="acceptPicks()">✅ Diese nehmen</div>
+           <div class="mopt" onclick="startFullMood()">🎯 Fragen beantworten</div>
+           <div class="mopt" onclick="startDiscovery()">🌍 Überrasch mich</div>`;
+        },600);
+      },700);
+    },1500);
+  } else {
+    aiMsg(chat,`Hey! Ich bin dein Food-Assistant für ${city.n} 🍽️`,0);
+    aiMsg(chat,'Ich lerne deinen Geschmack mit jedem Swipe — leg einfach los!',800);
+    setTimeout(()=>startFullMood(),1800);
+  }
+}
+
+function aiMsg(chat,html,delay){
+  setTimeout(()=>{
+    const t=document.createElement('div'); t.className='bbl ai';
+    t.innerHTML='<div class="tdots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+    chat.appendChild(t); chat.scrollTop=chat.scrollHeight;
+    setTimeout(()=>{
+      t.remove();
+      const b=document.createElement('div'); b.className='bbl ai fu'; b.innerHTML=html;
+      chat.appendChild(b); chat.scrollTop=chat.scrollHeight;
+    },520);
+  },delay);
+}
+
+function quickPick(id){
+  const food=F.find(f=>f.id===id); if(!food) return;
+  moodFiltered=F.map(f=>({...f,_s:scoreFood(f,food.tags.join(' ')+(food.c==='Austrian'?' österreich':''),profile)+(f.c===food.c?3:0)})).sort((a,b)=>b._s-a._s).slice(0,15);
+  $('mopts').innerHTML='';
+  aiMsg($('mchat'),`${food.e} ${food.n} und ähnliche Gerichte in ${city.n} — kommt! 🎯`,0);
+  setTimeout(()=>$('mgo').classList.add('show'),1300);
+}
+function acceptPicks(){
+  moodFiltered=F.map(f=>({...f,_s:scoreFood(f,'',profile)})).sort((a,b)=>b._s-a._s).slice(0,15);
+  $('mopts').innerHTML='';
+  aiMsg($('mchat'),`Perfekt! ${moodFiltered.length} Gerichte für ${city.n} kuratiert 🔥`,0);
+  setTimeout(()=>$('mgo').classList.add('show'),1300);
+}
+function startDiscovery(){
+  const tc=new Set(topK(profile.cuisines,3)); const fids=new Set(favs.map(f=>f.id));
+  moodFiltered=F.filter(f=>!fids.has(f.id)).map(f=>({...f,_s:(tc.has(f.c)?0:3)+f.r+Math.random()*2})).sort((a,b)=>b._s-a._s).slice(0,15);
+  $('mopts').innerHTML='';
+  aiMsg($('mchat'),'Heute gehen wir neue Wege — Küchen abseits deiner Gewohnheiten 🌍',0);
+  setTimeout(()=>$('mgo').classList.add('show'),1300);
+}
+function startFullMood(){ $('mopts').innerHTML=''; moodStep=0; moodAns={}; showMoodQ(0); }
+function showMoodQ(step){
+  if(step>=MOOD_QS.length){ finishMood(); return; }
+  const q=MOOD_QS[step]; const chat=$('mchat');
+  const t=document.createElement('div'); t.className='bbl ai';
+  t.innerHTML='<div class="tdots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+  chat.appendChild(t); chat.scrollTop=chat.scrollHeight;
+  setTimeout(()=>{
+    t.remove();
+    const b=document.createElement('div'); b.className='bbl ai fu'; b.textContent=q.q;
+    chat.appendChild(b); chat.scrollTop=chat.scrollHeight;
+    $('mopts').innerHTML=q.opts.map(o=>`<div class="mopt" onclick="pickQ('${o.replace(/'/g,"\\'")}',${step})">${o}</div>`).join('');
+  },560);
+}
+function pickQ(opt,step){
+  moodAns[MOOD_QS[step].id]=opt;
+  const chat=$('mchat');
+  const b=document.createElement('div'); b.className='bbl usr fu'; b.textContent=opt;
+  chat.appendChild(b); chat.scrollTop=chat.scrollHeight;
+  $('mopts').innerHTML='';
+  setTimeout(()=>showMoodQ(step+1),360);
+}
+function finishMood(){
+  const ms=Object.values(moodAns).join(' ');
+  moodFiltered=F.map(f=>({...f,_s:scoreFood(f,ms,profile)})).sort((a,b)=>b._s-a._s).slice(0,15);
+  const chat=$('mchat'); $('mopts').innerHTML='';
+  const t=document.createElement('div'); t.className='bbl ai';
+  t.innerHTML='<div class="tdots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>';
+  chat.appendChild(t); chat.scrollTop=chat.scrollHeight;
+  const top3=moodFiltered.slice(0,3);
+  setTimeout(()=>{
+    t.remove();
+    const b=document.createElement('div'); b.className='bbl ai fu';
+    b.innerHTML=`Ich habe <strong>${moodFiltered.length} Gerichte</strong> für ${city.n} gefunden! Top-Picks: ${top3.map(f=>f.e+' '+f.n).join(', ')} 🎯`;
+    chat.appendChild(b); chat.scrollTop=chat.scrollHeight;
+    $('mgo').classList.add('show');
+    Object.values(moodAns).forEach(a=>{ profile.moods=profile.moods||{}; profile.moods[a]=(profile.moods[a]||0)+1; });
+    save('hh_profile',profile);
+  },800);
+}
+
+// ─── SWIPE ────────────────────────────────────────────────────────────────────
+function getPool(){ let p=moodFiltered?[...moodFiltered]:[...F]; if(searchQ) p=p.filter(f=>f.n.toLowerCase().includes(searchQ.toLowerCase())||f.c.toLowerCase().includes(searchQ.toLowerCase())); return p; }
+
+function renderSwipe(){
+  const pool=getPool();
+  $('view').innerHTML=`
+    ${searchOn?`<div style="padding:7px 13px 3px;flex-shrink:0"><input class="sinp" placeholder="Gericht oder Küche..." oninput="onSrch(this.value)" value="${searchQ}" autofocus></div>`:''}
+    ${moodFiltered?`<div style="flex-shrink:0;padding:4px 13px 2px;display:flex;align-items:center;gap:7px"><span style="font-size:11px;color:var(--acc);font-weight:700">🧠 Mood-Filter (${moodFiltered.length})</span><span onclick="moodFiltered=null;renderSwipe()" style="font-size:10px;color:var(--mut);cursor:pointer;text-decoration:underline">Reset</span></div>`:''}
+    <div style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+      <div class="card-area" id="carea"></div>
+      <div class="swmeta" id="swmeta"></div>
+      <div class="swbtns">
+        <div class="swb" onclick="btnSw('left')" style="width:50px;height:50px;background:rgba(239,68,68,.1);border-color:rgba(239,68,68,.32);font-size:18px">✕</div>
+        <div class="swb" onclick="openDecision()" style="width:42px;height:42px;background:rgba(192,132,252,.1);border-color:rgba(192,132,252,.32);font-size:15px">🛒</div>
+        <div class="swb gp" onclick="btnSw('right')" style="width:62px;height:62px;background:rgba(0,230,118,.1);border-color:rgba(0,230,118,.32);font-size:24px">❤️</div>
+        <div class="swb" onclick="btnSw('up')" style="width:42px;height:42px;background:rgba(68,138,255,.1);border-color:rgba(68,138,255,.32);font-size:15px">📅</div>
+        <div class="swb" onclick="openPriceCompare()" style="width:50px;height:50px;background:rgba(255,214,10,.1);border-color:rgba(255,214,10,.32);font-size:18px">💰</div>
+      </div>
+      <div id="tchips" style="flex-shrink:0;padding:3px 14px 8px;display:flex;gap:5px;flex-wrap:wrap;justify-content:center"></div>
+    </div>`;
+  buildCards(pool);
+  updateSwMeta(pool.length-swipeIdx);
+  buildTChips();
+}
+
+function buildCards(pool){
+  const area=$('carea'); if(!area) return;
+  const stack=pool.slice(swipeIdx,swipeIdx+3);
+  if(!stack.length){
+    area.innerHTML=`<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:20px;background:rgba(255,255,255,.02);border:1px solid var(--bdr2);gap:12px">
+      <div style="font-size:48px">🍽️</div>
+      <div style="color:var(--mut);font-size:13px">Alle Gerichte durch!</div>
+      <div onclick="swipeIdx=0;renderSwipe()" style="padding:9px 20px;border-radius:50px;background:var(--acc);color:#fff;font-size:12px;font-weight:700;cursor:pointer">🔀 Neu mischen</div>
+    </div>`; return;
+  }
+  area.innerHTML=[...stack].reverse().map((f,i)=>{
+    const isTop=i===stack.length-1;
+    const rot=isTop?0:(i===0?-2.2:1.2);
+    const sc=isTop?1:(i===0?.95:.97);
+    const yy=isTop?0:(i===0?10:5);
+    const isFaved=favs.find(x=>x.id===f.id);
+    const showTags=[...f.tags,...f.diet].slice(0,3);
+    return `<div id="c${f.id}" class="card${isTop?' pi':''}" style="transform:rotate(${rot}deg) scale(${sc}) translateY(${yy}px);z-index:${i+1};background:${f.bg||'var(--card)'};${isTop?'cursor:grab':'pointer-events:none'}">
+      <div class="ctop">
+        <div class="cbadge">${f.c}</div>
+        <div class="ctop-btns">
+          <div class="cib" onclick="openRestaurant(${f.id})">🗺️</div>
+          <div class="cib" onclick="toggleFav(${f.id},event)">${isFaved?'❤️':'🤍'}</div>
+        </div>
+      </div>
+      <div class="cemoji">${f.e}</div>
+      <div class="stamp sy" id="sy${f.id}">YUMMY ✓</div>
+      <div class="stamp sn" id="sn${f.id}">NOPE ✗</div>
+      <div class="stamp sp" id="sp${f.id}">📅 PLAN</div>
+      <div class="cbot">
+        <div class="ctags">${showTags.map(t=>`<span class="ctag ${t}">${t}</span>`).join('')}</div>
+        <div class="cname">${f.n}</div>
+        <div class="cdesc">${f.d}</div>
+        <div class="cmeta">
+          <div class="cmi">⏱ ${f.t}</div>
+          <div class="cmi">🔥 ${f.kcal}</div>
+          <div class="cmi">⭐ ${f.r}</div>
+          <div class="cprice">${fmtP(f.p)}</div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+  if(stack.length) initDrag(stack[stack.length-1], pool);
+}
+
+function initDrag(food, pool){
+  const card=$('c'+food.id); if(!card) return;
+  let sx=0,sy=0,dx=0,dy=0,down=false;
+  const start=e=>{ down=true; const pt=e.touches?e.touches[0]:e; sx=pt.clientX; sy=pt.clientY; card.style.transition='none'; };
+  const move=e=>{
+    if(!down) return; if(e.cancelable) e.preventDefault();
+    const pt=e.touches?e.touches[0]:e; dx=pt.clientX-sx; dy=pt.clientY-sy;
+    card.style.transform=`rotate(${dx/16}deg) translateX(${dx}px) translateY(${dy}px)`;
+    const sy2=$('sy'+food.id), sn=$('sn'+food.id), sp=$('sp'+food.id);
+    if(sy2) sy2.style.opacity=dx>40?Math.min((dx-40)/80,1):0;
+    if(sn)  sn.style.opacity=dx<-40?Math.min((-dx-40)/80,1):0;
+    if(sp)  sp.style.opacity=dy<-40?Math.min((-dy-40)/80,1):0;
+  };
+  const end=()=>{
+    if(!down) return; down=false;
+    card.style.transition='transform .35s cubic-bezier(.175,.885,.32,1.275)';
+    if(dx>100){ doSwipe(food,'right',pool); return; }
+    if(dx<-100){ doSwipe(food,'left',pool); return; }
+    if(dy<-80){ doSwipe(food,'up',pool); return; }
+    card.style.transform='rotate(0deg) translateX(0) translateY(0)';
+    dx=0; dy=0;
+  };
+  card.addEventListener('mousedown',start);
+  card.addEventListener('mousemove',move);
+  card.addEventListener('mouseup',end);
+  card.addEventListener('touchstart',start,{passive:true});
+  card.addEventListener('touchmove',move,{passive:false});
+  card.addEventListener('touchend',end);
+}
+
+function doSwipe(food,dir,pool){
+  const card=$('c'+food.id); if(!card) return;
+  card.style.transition='transform .28s ease-in,opacity .28s ease-in';
+  if(dir==='right'){
+    card.style.transform='translateX(160%) rotate(30deg)';
+    addFav(food); toast(`❤️ ${food.n} geliked!`); updProfile(food,'like');
+    if(pro) logMeal(food);
+  } else if(dir==='left'){
+    card.style.transform='translateX(-160%) rotate(-30deg)';
+    updProfile(food,'skip');
+  } else if(dir==='up'){
+    card.style.transform='translateY(-140%) rotate(-5deg)';
+    openPlanPicker(food);
+  }
+  histLog.unshift({...food,dir,ts:new Date().toLocaleTimeString('de-AT',{hour:'2-digit',minute:'2-digit'})});
+  save('hh_hist',histLog.slice(0,100));
+  setTimeout(()=>{ swipeIdx++; buildCards(pool); updateSwMeta(pool.length-swipeIdx); buildTChips(); checkAchievements(); },280);
+}
+
+function updProfile(food,act){
+  profile.sw++;
+  if(act==='like'){ profile.lk++; food.tags.forEach(t=>{ profile.tags[t]=(profile.tags[t]||0)+1; }); profile.cuisines[food.c]=(profile.cuisines[food.c]||0)+1; }
+  save('hh_profile',profile);
+}
+function btnSw(dir){ const p=getPool(); const f=p[swipeIdx]; if(f) doSwipe(f,dir,p); }
+function undoLast(){ if(swipeIdx<=0) return; swipeIdx--; histLog.shift(); save('hh_hist',histLog); renderSwipe(); toast('↩ Rückgängig'); }
+function toggleSearch(){ searchOn=!searchOn; searchQ=''; if(CT==='swipe') renderSwipe(); else if(CT==='favs') renderFavs(); }
+function onSrch(v){ searchQ=v; if(CT==='swipe'){const p=getPool();buildCards(p);updateSwMeta(p.length-swipeIdx);}else if(CT==='favs') renderFavs(); }
+function updateSwMeta(n){ const el=$('swmeta'); if(el) el.textContent=`${Math.max(0,n)} Gerichte verfügbar · ${city.n}`; }
+function buildTChips(){ const el=$('tchips'); if(!el) return; const top=Object.entries(profile.tags||{}).sort((a,b)=>b[1]-a[1]).slice(0,5); if(!top.length){el.innerHTML=`<div style="font-size:10px;color:var(--mut)">Swipe um dein Geschmacksprofil aufzubauen</div>`;return;} el.innerHTML=top.map(([t,n])=>`<div class="tchip">${t} <span style="opacity:.5">${n}×</span></div>`).join(''); }
+
+// ─── FAVS ─────────────────────────────────────────────────────────────────────
+function addFav(food){ if(!favs.find(f=>f.id===food.id)){ favs.unshift(food); save('hh_favs',favs); } }
+function isFav(id){ return !!favs.find(f=>f.id===id); }
+function toggleFav(id,e){ if(e) e.stopPropagation(); const food=F.find(f=>f.id===id); if(!food) return;
+  if(isFav(id)){ favs=favs.filter(f=>f.id!==id); save('hh_favs',favs); toast('💔 Entfernt'); }
+  else { addFav(food); updProfile(food,'like'); toast(`❤️ ${food.n} geliked!`); }
+  if(CT==='favs') renderFavs(); else if(CT==='swipe') renderSwipe();
+}
+function renderFavs(){
+  const pool=searchQ?favs.filter(f=>f.n.toLowerCase().includes(searchQ.toLowerCase())):favs;
+  if(!pool.length){ $('view').innerHTML=`<div class="empty"><div class="eico">🤍</div><div class="ettl">Noch keine Favoriten</div><div class="esub">Swipe rechts um Gerichte zu speichern</div></div>`; return; }
+  $('view').innerHTML=`${searchOn?`<div style="padding:7px 13px 3px;flex-shrink:0"><input class="sinp" placeholder="Favoriten suchen..." oninput="onSrch(this.value)" value="${searchQ}" autofocus></div>`:''}
+  <div class="shdr"><div class="sttl">❤️ Favoriten</div><div class="ssub">${pool.length} Gerichte · ${city.n}</div></div>
+  <div class="scroll">${pool.map(f=>`<div class="li">
+    <div class="li-ico">${f.e}</div>
+    <div class="li-body"><div class="li-name">${f.n}</div><div class="li-sub">${f.c} · ${fmtP(f.p)} · ⭐${f.r}</div></div>
+    <button class="smb" style="background:var(--acc);color:#fff" onclick="openDecisionFor(${f.id})">Holen</button>
+    <div onclick="toggleFav(${f.id})" style="font-size:16px;cursor:pointer;margin-left:4px;opacity:.45">✕</div>
+  </div>`).join('')}</div>`;
+}
+
+// ─── WEEK PLAN ────────────────────────────────────────────────────────────────
+function renderPlan(){
+  const today=new Date(); const DY=['So','Mo','Di','Mi','Do','Fr','Sa'];
+  const dates=[]; for(let i=0;i<7;i++){const d=new Date(today);d.setDate(today.getDate()-today.getDay()+i);dates.push(d);}
+  const ts=today.toISOString().split('T')[0];
+  $('view').innerHTML=`<div class="shdr"><div class="sttl">📅 Wochenplan</div><div class="ssub">${city.n} · ${city.s}</div></div>
+  <div class="wgrid">${dates.map(d=>{
+    const key=d.toISOString().split('T')[0]; const food=weekPlan[key]?F.find(f=>f.id===weekPlan[key]):null; const it=key===ts;
+    return `<div class="wday${it?' today':''}${food?' filled':''}" onclick="openPlanDate('${key}')">
+      <div class="wdn">${DY[d.getDay()]}</div><div class="wdd" style="${it?'color:var(--acc)':''}">${d.getDate()}</div>
+      ${food?`<div class="wde">${food.e}</div><div class="wdf">${food.n.split(' ')[0]}</div>`:'<div style="font-size:18px;color:var(--bdr2)">+</div>'}
+    </div>`;
+  }).join('')}</div>
+  <div class="scroll">${Object.entries(weekPlan).map(([date,foodId])=>{
+    const food=F.find(f=>f.id===foodId); if(!food) return'';
+    const d=new Date(date+'T12:00:00');
+    return `<div class="li"><div class="li-ico">${food.e}</div><div class="li-body"><div class="li-name">${food.n}</div><div class="li-sub">${DY[d.getDay()]} ${d.getDate()}.${d.getMonth()+1}. · ${fmtP(food.p)}</div></div>
+      <button class="smb" style="background:var(--acc);color:#fff" onclick="openDecisionFor(${food.id})">Holen</button>
+      <div onclick="rmPlan('${date}')" style="font-size:14px;cursor:pointer;opacity:.4;margin-left:4px">✕</div></div>`;
+  }).join('')}${!Object.keys(weekPlan).length?'<div class="empty"><div class="eico">📅</div><div class="ettl">Noch kein Plan</div><div class="esub">Tippe auf einen Tag oben</div></div>':''}</div>`;
+}
+function openPlanDate(dateStr){
+  $('view').innerHTML=`<div class="shdr"><div class="sttl">📅 Gericht wählen</div><div class="sact" onclick="renderPlan()">← Zurück</div></div>
+  <div class="scroll">${F.map(f=>`<div class="li" onclick="setPlan('${dateStr}',${f.id})">
+    <div class="li-ico">${f.e}</div><div class="li-body"><div class="li-name">${f.n}</div><div class="li-sub">${f.c} · ${fmtP(f.p)}</div></div>
+    ${weekPlan[dateStr]===f.id?'<span style="color:var(--acc);font-size:16px">✓</span>':''}
+  </div>`).join('')}</div>`;
+}
+function setPlan(date,foodId){ weekPlan[date]=foodId; save('hh_week',weekPlan); profile.planCreated=true; save('hh_profile',profile); toast('📅 Plan gespeichert!'); renderPlan(); checkAchievements(); }
+function openPlanPicker(food){
+  const today=new Date(); const DY=['So','Mo','Di','Mi','Do','Fr','Sa'];
+  const dates=[]; for(let i=0;i<7;i++){const d=new Date(today);d.setDate(today.getDate()-today.getDay()+i);dates.push(d);}
+  const ov=document.createElement('div'); ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(14px);z-index:300;display:flex;align-items:flex-end;justify-content:center;max-width:480px;margin:0 auto';
+  ov.innerHTML=`<div style="background:var(--surf);border-radius:26px 26px 0 0;width:100%;padding:22px 18px 38px;border-top:1px solid var(--bdr2)">
+    <div class="syne" style="font-size:16px;font-weight:900;margin-bottom:12px">${food.e} ${food.n} — welcher Tag?</div>
+    <div style="display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:14px">
+      ${dates.map(d=>{ const key=d.toISOString().split('T')[0]; return`<div onclick="setPlan('${key}',${food.id});this.closest('[style*=fixed]').remove()" style="padding:9px 3px;border-radius:10px;background:var(--card);border:1px solid var(--bdr2);text-align:center;cursor:pointer">
+        <div style="font-size:8px;color:var(--mut);font-weight:700;text-transform:uppercase">${DY[d.getDay()]}</div>
+        <div style="font-size:11px;font-weight:700">${d.getDate()}</div>
+      </div>`; }).join('')}
+    </div>
+    <button onclick="this.closest('[style*=fixed]').remove()" style="width:100%;padding:11px;border-radius:12px;background:var(--dim);border:1px solid var(--bdr);color:var(--mut);font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif">Abbrechen</button>
+  </div>`;
+  document.body.appendChild(ov);
+}
+function rmPlan(date){ delete weekPlan[date]; save('hh_week',weekPlan); renderPlan(); }
+
+// ─── HEALTH ───────────────────────────────────────────────────────────────────
+function logMeal(food){
+  const now=new Date();
+  mealLog.unshift({id:food.id,n:food.n,e:food.e,kcal:food.kcal,p:food.p,
+    t:`${String(now.getHours()).padStart(2,'0')}:${String(now.getMinutes()).padStart(2,'0')}`,
+    date:todayStr(),city:city.n});
+  if(mealLog.length>200) mealLog=mealLog.slice(0,200);
+  save('hh_meals',mealLog);
+  toast(`📊 ${food.e} ${food.n} geloggt — ${food.kcal} kcal`);
+  profile.logStreak=(profile.logStreak||0)+1; save('hh_profile',profile); checkAchievements();
+}
+function logMealById(id){ const f=F.find(x=>x.id===id); if(f) logMeal(f); }
+function addWater(){
+  if(water.date!==todayStr()) water={date:todayStr(),g:0};
+  water.g=Math.min(water.g+1,12); save('hh_water',water);
+  const g=water.g;
+  if(g===WATER_GOAL){ toast('🎉 2 Liter erreicht! 💧',3000); profile.waterStreak=(profile.waterStreak||0)+1; save('hh_profile',profile); checkAchievements(); }
+  else toast(`💧 ${g}/${WATER_GOAL} Gläser`);
+  if(CT==='health') renderHealth();
+}
+function resetWater(){ water={date:todayStr(),g:0}; save('hh_water',water); if(CT==='health') renderHealth(); }
+function delMeal(idx){
+  const td=todayMeals(); const e=td[idx]; if(!e) return;
+  const gi=mealLog.findIndex(m=>m.date===e.date&&m.t===e.t&&m.n===e.n);
+  if(gi>-1) mealLog.splice(gi,1); save('hh_meals',mealLog); renderHealth(); toast('🗑️ Entfernt');
+}
+
+function renderHealth(){
+  if(!pro){ renderHealthTeaser(); return; }
+  const td=todayMeals();
+  const kcalToday=td.reduce((s,m)=>s+m.kcal,0);
+  const spendToday=td.reduce((s,m)=>s+m.p,0);
+  const DY=['So','Mo','Di','Mi','Do','Fr','Sa'];
+  const weekDays=[]; for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);weekDays.push(d.toISOString().split('T')[0]);}
+  const wkData=weekDays.map(d=>({date:d,sp:mealLog.filter(m=>m.date===d).reduce((s,m)=>s+m.p,0)}));
+  const wkSpend=wkData.reduce((s,d)=>s+d.sp,0);
+  const maxDay=Math.max(...wkData.map(d=>d.sp),1);
+  const g=todayGlasses();
+  const kP=Math.min(100,Math.round(kcalToday/KCAL_GOAL*100));
+  const sP=Math.min(100,Math.round(wkSpend/SPEND_GOAL*100));
+  const kC=kP>100?'var(--red)':kP>80?'var(--yel)':'var(--grn)';
+  const sC=sP>90?'var(--red)':sP>70?'var(--yel)':'var(--blu)';
+  const R1=52,R2=38,CX=68,CY=68,SW=10;
+  const c1=2*Math.PI*R1,c2=2*Math.PI*R2;
+  const TIPS=[
+    {i:'🥤',t:'Erst Wasser trinken',b:'Hunger und Durst werden oft verwechselt. Trink ein Glas und warte 10 Minuten.'},
+    {i:'🥚',t:'Protein sättigt länger',b:'Eier, Hühnchen, Hülsenfrüchte halten 2–4× länger satt als Kohlenhydrate.'},
+    {i:'⏰',t:'Die 20-Minuten-Regel',b:'Sättigungsgefühl braucht 20 Min. zum Gehirn. Iss langsam, mach Pausen.'},
+    {i:'😴',t:'Schlafmangel macht hungrig',b:'Weniger als 7h Schlaf erhöht das Hungerhormon Ghrelin um bis zu 24%.'},
+    {i:'🧠',t:'Emotionaler Hunger',b:'Würdest du jetzt einen Apfel essen? Nein = kein echter Hunger.'},
+    {i:'🌾',t:'Ballaststoffe sind King',b:'Hafer, Bohnen, Vollkorn stabilisieren den Blutzucker. Weniger Heißhunger.'},
+    {i:'☕',t:'Grüntee oder Kaffee',b:'Unterdrücken kurzfristig den Appetit und steigern den Stoffwechsel leicht.'},
+    {i:'🥗',t:'Volumen essen',b:'Salat, Gurken, Suppen — wenig Kalorien, viel Volumen, frühe Sättigung.'},
+  ];
+  const tip=TIPS[Math.floor(Date.now()/3600000)%TIPS.length];
+  $('view').innerHTML=`<div class="shdr"><div class="sttl">💚 Health & Money</div><div style="display:flex;gap:7px;align-items:center"><span class="probadge">PRO</span><span onclick="openScanUI()" style="padding:3px 10px;border-radius:50px;background:rgba(255,107,53,.1);border:1px solid rgba(255,107,53,.22);font-size:10px;font-weight:700;color:var(--acc);cursor:pointer">📷 Scan</span></div></div>
+  <div class="scroll">
+    <div style="display:flex;justify-content:center;padding:12px 0 4px">
+      <div style="position:relative;width:136px;height:136px">
+        <svg width="136" height="136" style="transform:rotate(-90deg)">
+          <circle cx="${CX}" cy="${CY}" r="${R1}" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="${SW}"/>
+          <circle cx="${CX}" cy="${CY}" r="${R2}" fill="none" stroke="rgba(255,255,255,.05)" stroke-width="${SW}"/>
+          <circle cx="${CX}" cy="${CY}" r="${R1}" fill="none" stroke="${kC}" stroke-width="${SW}" stroke-dasharray="${c1*(kP/100)} ${c1}" stroke-linecap="round" style="filter:drop-shadow(0 0 4px ${kC})"/>
+          <circle cx="${CX}" cy="${CY}" r="${R2}" fill="none" stroke="${sC}" stroke-width="${SW}" stroke-dasharray="${c2*(sP/100)} ${c2}" stroke-linecap="round"/>
+        </svg>
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center">
+          <span class="syne" style="font-size:22px;font-weight:900;color:${kC}">${kcalToday}</span>
+          <span style="font-size:8px;color:var(--mut);text-transform:uppercase;letter-spacing:.1em">kcal heute</span>
+          <span style="font-size:10px;color:${sC};font-weight:700;margin-top:2px">${fmtP(spendToday)}</span>
+        </div>
+      </div>
+    </div>
+    <div class="hgrid">
+      <div class="hcard hg"><span class="hval">${kcalToday}<span style="font-size:11px;font-weight:400;color:var(--mut)">/${KCAL_GOAL}</span></span><span class="hlbl">Kalorien</span><div class="hbar"><div class="hfill" style="width:${kP}%;background:${kC}"></div></div><span class="hsub">${Math.max(0,KCAL_GOAL-kcalToday)>0?Math.max(0,KCAL_GOAL-kcalToday)+' übrig':'Ziel ✓'}</span></div>
+      <div class="hcard hb"><span class="hval">${fmtP(wkSpend)}<span style="font-size:11px;font-weight:400;color:var(--mut)"> /€${SPEND_GOAL}</span></span><span class="hlbl">Ausgaben Woche</span><div class="hbar"><div class="hfill" style="width:${sP}%;background:${sC}"></div></div><span class="hsub">${wkSpend<SPEND_GOAL?fmtP(SPEND_GOAL-wkSpend)+' übrig':'Budget ⚠️'}</span></div>
+      <div class="hcard ho"><span class="hval">${td.length}</span><span class="hlbl">Mahlzeiten heute</span><div style="display:flex;gap:3px;margin-top:5px">${['🌅','☀️','🌙','🍿'].map((x,i)=>`<div style="flex:1;text-align:center;font-size:12px;opacity:${td.length>i?1:.15}">${x}</div>`).join('')}</div><span class="hsub">${td.length?'Ø '+fmtP(spendToday/td.length)+'/Mahlzeit':'Noch nichts'}</span></div>
+      <div class="hcard hp" onclick="addWater()" style="cursor:pointer"><span class="hval">${g}<span style="font-size:11px;font-weight:400;color:var(--mut)"> /${WATER_GOAL}</span></span><span class="hlbl">💧 Wasser</span><div class="hbar"><div class="hfill" style="width:${Math.min(100,g/WATER_GOAL*100)}%;background:var(--blu)"></div></div><span class="hsub" style="color:${g>=WATER_GOAL?'var(--grn)':'var(--mut)'}">${g>=WATER_GOAL?'2L Ziel ✓ 🎉':'Tippen = +1 Glas'}</span></div>
+    </div>
+    <div style="margin:0 13px 10px;padding:11px 13px;background:var(--card);border-radius:13px;border:1px solid rgba(68,138,255,.18)">
+      <div style="display:flex;justify-content:space-between;margin-bottom:8px"><span style="font-size:11px;font-weight:700">💧 Wasserziel · 2 Liter täglich</span><span onclick="resetWater()" style="font-size:10px;color:var(--mut);cursor:pointer">Reset</span></div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap">${[...Array(WATER_GOAL)].map((_,i)=>`<div class="wglass${i<g?' f':' e'}" style="flex:1;min-width:calc(12.5% - 4px);aspect-ratio:1" onclick="addWater()">${i<g?'💧':'·'}</div>`).join('')}</div>
+    </div>
+    <div style="margin:0 13px 3px;display:flex;justify-content:space-between"><span style="font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.1em">Ausgaben diese Woche · ${city.n}</span><span style="font-size:10px;color:var(--acc);font-weight:700">${fmtP(wkSpend)}</span></div>
+    <div class="wbars">${wkData.map(d=>{const pct=Math.round(d.sp/maxDay*100);const it=d.date===todayStr();const day=DY[new Date(d.date+'T12:00:00').getDay()];return`<div class="wcol"><div class="wbv" style="color:${it?'var(--acc)':'rgba(255,255,255,.3)'}">${d.sp>0?'€'+d.sp.toFixed(0):''}</div><div class="wbar" style="height:${Math.max(pct,3)}%;background:${it?'var(--acc)':'rgba(255,255,255,.12)'}"></div><div class="wbd" style="color:${it?'var(--acc)':'var(--mut)'}">${day}</div></div>`;}).join('')}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 13px 0">
+      <div onclick="openScanUI('qr')" style="padding:13px;border-radius:13px;background:var(--card);border:1px solid var(--bdr2);text-align:center;cursor:pointer"><div style="font-size:24px;margin-bottom:4px">📷</div><div style="font-size:11px;font-weight:700">Barcode scannen</div><div style="font-size:9px;color:var(--mut);margin-top:2px">Supermarkt-Produkt</div></div>
+      <div onclick="openScanUI('photo')" style="padding:13px;border-radius:13px;background:var(--card);border:1px solid var(--bdr2);text-align:center;cursor:pointer"><div style="font-size:24px;margin-bottom:4px">🍽️</div><div style="font-size:11px;font-weight:700">Foto erkennen</div><div style="font-size:9px;color:var(--mut);margin-top:2px">KI-Erkennung</div></div>
+    </div>
+    <div style="margin:11px 13px 0;padding:13px;border-radius:13px;background:linear-gradient(135deg,rgba(192,132,252,.08),rgba(255,107,53,.06));border:1px solid rgba(192,132,252,.18)">
+      <div style="font-size:9px;font-weight:700;color:var(--pur);text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px">💡 Hunger-Tipp</div>
+      <div style="display:flex;gap:10px"><span style="font-size:26px;flex-shrink:0">${tip.i}</span><div><div style="font-size:12px;font-weight:700;color:#fff;margin-bottom:3px">${tip.t}</div><div style="font-size:11px;color:rgba(255,255,255,.45);line-height:1.5">${tip.b}</div></div></div>
+    </div>
+    <div style="margin:11px 13px 4px;display:flex;justify-content:space-between;align-items:center"><span style="font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.1em">Heute geloggt · ${city.n}</span><span onclick="openAddMeal()" style="font-size:11px;color:var(--acc);font-weight:700;cursor:pointer">+ Hinzufügen</span></div>
+    ${td.length?td.map((m,i)=>`<div style="display:flex;align-items:center;gap:9px;padding:9px 13px;border-bottom:1px solid var(--bdr)"><div style="font-size:10px;color:var(--mut);width:32px;flex-shrink:0;text-align:right">${m.t}</div><div style="font-size:20px;flex-shrink:0">${m.e}</div><div style="flex:1;min-width:0"><div style="font-size:12px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${m.n}</div><div style="font-size:10px;color:var(--mut);margin-top:1px">${m.kcal} kcal · ${fmtP(m.p)}</div></div><div onclick="delMeal(${i})" style="font-size:12px;color:var(--mut);cursor:pointer;opacity:.5;padding:4px">✕</div></div>`).join(''):
+    `<div onclick="openAddMeal()" style="margin:8px 13px;padding:12px;border-radius:13px;border:2px dashed var(--bdr2);text-align:center;cursor:pointer;font-size:12px;font-weight:600;color:var(--mut)">+ Erste Mahlzeit heute loggen</div>`}
+    <div style="height:20px"></div>
+  </div>`;
+}
+
+function renderHealthTeaser(){
+  $('view').innerHTML=`<div class="shdr"><div class="sttl">💚 Health & Money</div><span class="probadge">PRO</span></div>
+  <div style="flex:1;position:relative;overflow:hidden">
+    <div style="filter:blur(5px);pointer-events:none;opacity:.4;padding:14px">
+      <div style="display:flex;justify-content:center;margin-bottom:14px"><div style="width:130px;height:130px;border-radius:50%;border:10px solid rgba(0,230,118,.2);display:flex;align-items:center;justify-content:center"><div style="text-align:center"><div class="syne" style="font-size:24px;font-weight:900">1.240</div><div style="font-size:9px;color:var(--mut)">kcal heute</div></div></div></div>
+      <div class="hgrid">${[['1.240','Kalorien','hg'],['€34,50','Ausgaben','hb'],['3','Mahlzeiten','ho'],['5/8','Wasser','hp']].map(([v,l,c])=>`<div class="hcard ${c}"><span class="hval">${v}</span><span class="hlbl">${l}</span></div>`).join('')}</div>
+    </div>
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:13px;background:linear-gradient(to bottom,rgba(7,7,15,.5),rgba(7,7,15,.95))">
+      <div style="font-size:42px">🔒</div>
+      <div class="syne" style="font-size:17px;font-weight:900;text-align:center;padding:0 28px;line-height:1.3">Tracke Kalorien & Budget wie Apple Health</div>
+      <div style="font-size:11px;color:var(--mut);text-align:center;padding:0 34px;line-height:1.5">Wochencharts, Mahlzeiten-Log, Wasser-Tracker — alles in Pro.</div>
+      <button class="ctabtn syne" style="width:auto;padding:12px 28px" onclick="openPaywall()">Pro freischalten — €3,99/Mo ✦</button>
+    </div>
+  </div>`;
+}
+
+function openAddMeal(){
+  $('view').innerHTML=`<div class="shdr"><div class="sttl">+ Mahlzeit loggen</div><div class="sact" onclick="renderHealth()">← Zurück</div></div>
+  <div style="padding:7px 13px 3px;flex-shrink:0"><input class="sinp" placeholder="Gericht suchen..." oninput="filterML(this.value)" autofocus></div>
+  <div class="scroll" id="mlList">${mlRows(F)}</div>`;
+}
+function mlRows(pool){ return pool.map(f=>`<div class="li" onclick="logMealById(${f.id});renderHealth()"><div class="li-ico">${f.e}</div><div class="li-body"><div class="li-name">${f.n}</div><div class="li-sub">${f.kcal} kcal · ${fmtP(f.p)} · ${f.c}</div></div><div style="font-size:18px;color:var(--grn)">+</div></div>`).join('');}
+function filterML(q){ const el=$('mlList'); if(!el) return; el.innerHTML=mlRows(q?F.filter(f=>f.n.toLowerCase().includes(q.toLowerCase())||f.c.toLowerCase().includes(q.toLowerCase())):F); }
+
+// ─── SCANNER ──────────────────────────────────────────────────────────────────
+const BARCODES={'9001414606604':{n:'Milka Schokolade',e:'🍫',kcal:535,p:1.49},'4006381333931':{n:'Haribo Goldbären',e:'🐻',kcal:343,p:1.29},'8712100735431':{n:'Red Bull',e:'🐂',kcal:45,p:1.59},'5000112637939':{n:'Coca-Cola 0,5L',e:'🥤',kcal:42,p:1.89}};
+const DETECTIONS=[{n:'Wiener Schnitzel',e:'🥩',kcal:890,p:14.9,conf:94},{n:'Pizza Margherita',e:'🍕',kcal:720,p:13.0,conf:97},{n:'Tonkotsu Ramen',e:'🍜',kcal:780,p:13.5,conf:91},{n:'Buddha Bowl',e:'🥗',kcal:480,p:10.9,conf:88},{n:'Smash Burger',e:'🍔',kcal:890,p:12.9,conf:96}];
+
+function openScanUI(mode='qr'){
+  if(!pro){openPaywall();return;}
+  const ov=document.createElement('div');
+  ov.style.cssText='position:fixed;inset:0;background:#07070f;z-index:500;display:flex;flex-direction:column;max-width:480px;margin:0 auto';
+  ov.innerHTML=`<div style="padding:14px 16px;display:flex;justify-content:space-between;align-items:center;flex-shrink:0"><div class="syne" style="font-size:17px;font-weight:900">${mode==='qr'?'📷 Barcode Scanner':'🍽️ Foto erkennen'}</div><div onclick="this.closest('[style*=fixed]').remove()" style="font-size:22px;cursor:pointer;opacity:.6">✕</div></div>
+  <div style="flex:1;background:#000;position:relative;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:14px">
+    <div style="font-size:48px">${mode==='qr'?'📷':'🍽️'}</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.35);text-align:center">Demo-Modus · Kamera in der echten App</div>
+    ${mode==='qr'?`<div style="width:180px;height:180px;border:2px solid var(--acc);border-radius:8px;position:relative"><div style="position:absolute;top:0;left:0;width:22px;height:22px;border-top:3px solid var(--acc);border-left:3px solid var(--acc)"></div><div style="position:absolute;top:0;right:0;width:22px;height:22px;border-top:3px solid var(--acc);border-right:3px solid var(--acc)"></div><div style="position:absolute;bottom:0;left:0;width:22px;height:22px;border-bottom:3px solid var(--acc);border-left:3px solid var(--acc)"></div><div style="position:absolute;bottom:0;right:0;width:22px;height:22px;border-bottom:3px solid var(--acc);border-right:3px solid var(--acc)"></div></div>`:''}
+  </div>
+  <div style="flex-shrink:0;padding:14px 16px 28px;background:var(--bg)">
+    <div style="display:flex;gap:8px;margin-bottom:12px">
+      <div onclick="this.closest('[style*=fixed]').remove();setTimeout(()=>openScanUI('qr'),200)" style="flex:1;padding:9px;border-radius:11px;background:${mode==='qr'?'rgba(255,107,53,.18)':'var(--card)'};border:1px solid ${mode==='qr'?'var(--acc)':'var(--bdr2)'};text-align:center;cursor:pointer;font-size:11px;font-weight:700;color:${mode==='qr'?'var(--acc)':'var(--mut)'}">📷 Barcode</div>
+      <div onclick="this.closest('[style*=fixed]').remove();setTimeout(()=>openScanUI('photo'),200)" style="flex:1;padding:9px;border-radius:11px;background:${mode==='photo'?'rgba(255,107,53,.18)':'var(--card)'};border:1px solid ${mode==='photo'?'var(--acc)':'var(--bdr2)'};text-align:center;cursor:pointer;font-size:11px;font-weight:700;color:${mode==='photo'?'var(--acc)':'var(--mut)'}">🍽️ Foto</div>
+      <label style="flex:1;padding:9px;border-radius:11px;background:var(--card);border:1px solid var(--bdr2);text-align:center;cursor:pointer;font-size:11px;font-weight:700;color:var(--mut)">📁 Upload<input type="file" accept="image/*" style="display:none" onchange="handleUpload(event)"></label>
+    </div>
+    <button onclick="${mode==='qr'?'simQR':'simFood'}();this.closest('[style*=fixed]').remove()" style="width:100%;padding:13px;border-radius:13px;background:var(--acc);color:#fff;font-size:14px;font-weight:800;border:none;cursor:pointer;font-family:'Syne',sans-serif">${mode==='qr'?'📷 Jetzt scannen':'🔍 Erkennen'}</button>
+  </div>`;
+  document.body.appendChild(ov);
+}
+function simQR(){ const k=Object.keys(BARCODES); showScan({type:'qr',...BARCODES[k[Math.floor(Math.random()*k.length)]]}); }
+function simFood(){ showScan({...DETECTIONS[Math.floor(Math.random()*DETECTIONS.length)]}); }
+function handleUpload(e){ const f=e.target.files[0]; if(!f) return; document.querySelectorAll('[style*="z-index:500"]').forEach(el=>el.remove()); const r=new FileReader(); r.onload=()=>{ const ov=document.createElement('div'); ov.style.cssText='position:fixed;inset:0;background:#07070f;z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;max-width:480px;margin:0 auto;padding:32px'; ov.innerHTML=`<img src="${r.result}" style="width:200px;height:160px;object-fit:cover;border-radius:14px;border:1px solid var(--bdr2)"><div class="syne" style="font-size:16px;font-weight:900">🧠 KI analysiert...</div><div style="display:flex;gap:6px">${[0,.2,.4].map(d=>`<div class="dot" style="animation-delay:${d}s"></div>`).join('')}</div>`; document.body.appendChild(ov); setTimeout(()=>{ov.remove();simFood();},2200); }; r.readAsDataURL(f); }
+function showScan(r){
+  const ov=document.createElement('div'); ov.style.cssText='position:fixed;inset:0;background:rgba(0,0,0,.88);backdrop-filter:blur(14px);z-index:500;display:flex;align-items:flex-end;justify-content:center;max-width:480px;margin:0 auto';
+  ov.innerHTML=`<div style="background:var(--surf);border-radius:26px 26px 0 0;width:100%;padding:22px 18px 40px;border-top:1px solid var(--bdr2)">
+    <div style="text-align:center;font-size:56px;margin-bottom:10px">${r.e}</div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px"><div class="syne" style="font-size:18px;font-weight:900;flex:1">${r.n}</div>${r.conf?`<div style="padding:3px 9px;border-radius:50px;background:rgba(0,230,118,.12);color:var(--grn);font-size:10px;font-weight:700;border:1px solid rgba(0,230,118,.22)">${r.conf}% sicher</div>`:''}</div>
+    <div style="display:flex;gap:10px;padding:11px;background:var(--card);border-radius:11px;margin-bottom:14px">
+      <div style="text-align:center;flex:1"><div style="font-size:15px;font-weight:800;color:var(--grn)">${r.kcal}</div><div style="font-size:9px;color:var(--mut);text-transform:uppercase">kcal</div></div>
+      <div style="text-align:center;flex:1"><div style="font-size:15px;font-weight:800;color:var(--blu)">${fmtP(r.p)}</div><div style="font-size:9px;color:var(--mut);text-transform:uppercase">Preis</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button onclick="logMeal({id:Date.now(),n:'${r.n}',e:'${r.e}',kcal:${r.kcal||0},p:${r.p||0}});this.closest('[style*=fixed]').remove();toast('📊 Geloggt!')" style="padding:12px;border-radius:11px;background:rgba(0,230,118,.12);border:1px solid rgba(0,230,118,.25);color:var(--grn);font-size:12px;font-weight:700;cursor:pointer">📊 Ins Log</button>
+      <button onclick="this.closest('[style*=fixed]').remove()" style="padding:12px;border-radius:11px;background:var(--dim);border:1px solid var(--bdr);color:var(--mut);font-size:12px;font-weight:700;cursor:pointer">Schließen</button>
+    </div>
+  </div>`;
+  document.body.appendChild(ov);
+}
+
+// ─── FRIDGE ───────────────────────────────────────────────────────────────────
+const QINGS=['Eier','Käse','Nudeln','Reis','Tomate','Zwiebel','Knoblauch','Hühnchen','Avocado','Kartoffeln','Kokosmilch','Butter','Mehl','Milch','Spinat','Pilze','Lachs','Thunfisch','Tofu','Zitrone','Speck','Parmesan'];
+function renderFridge(){
+  $('view').innerHTML=`<div class="shdr"><div class="sttl">🧊 Kühlschrank-KI</div><div class="ssub">Was kann ich kochen?</div></div>
+  <div style="flex-shrink:0;padding:6px 13px 8px">
+    <div style="display:flex;gap:7px;margin-bottom:8px"><input class="sinp" id="fInp" placeholder="Zutat eingeben..." style="flex:1" onkeydown="if(event.key==='Enter')addFIng(this.value)"><button onclick="addFIng($('fInp').value)" style="padding:9px 14px;border-radius:11px;background:var(--acc);color:#fff;font-size:13px;font-weight:700;border:none;cursor:pointer">+</button></div>
+    <div id="fchips" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:9px"></div>
+    <div style="font-size:10px;color:var(--mut);margin-bottom:6px;font-weight:700;text-transform:uppercase;letter-spacing:.08em">Schnell-Auswahl:</div>
+    <div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">${QINGS.map(i=>`<div class="qing" onclick="addFIng('${i}')">${i}</div>`).join('')}</div>
+    <button onclick="matchFridge()" style="width:100%;padding:12px;border-radius:12px;background:var(--acc);color:#fff;font-size:13px;font-weight:800;border:none;cursor:pointer;font-family:'Syne',sans-serif">🔍 Gerichte finden →</button>
+  </div>
+  <div class="scroll" id="fres"><div class="empty"><div class="eico">🧊</div><div class="ettl">Gib Zutaten ein</div><div class="esub">Die KI findet was du damit kochen kannst</div></div></div>`;
+  renderFChips();
+}
+function renderFChips(){ const el=$('fchips'); if(!el) return; el.innerHTML=fridgeIngs.map((v,i)=>`<div class="fchip">${v}<span onclick="rmFIng(${i})" style="font-size:14px;opacity:.6;margin-left:2px">×</span></div>`).join(''); }
+function addFIng(v){ v=(v||'').trim(); if(!v) return; if(!fridgeIngs.includes(v)){fridgeIngs.push(v);save('hh_fridge',fridgeIngs);} const inp=$('fInp'); if(inp) inp.value=''; renderFChips(); profile.fridgeScans=(profile.fridgeScans||0)+1; save('hh_profile',profile); checkAchievements(); }
+function rmFIng(i){ fridgeIngs.splice(i,1); save('hh_fridge',fridgeIngs); renderFChips(); }
+function matchFridge(){
+  if(!fridgeIngs.length){toast('Gib zuerst Zutaten ein 🧊');return;}
+  const results=F.map(f=>{ const req=f.ing||[]; const matched=req.filter(ing=>fridgeIngs.some(u=>ing.toLowerCase().includes(u.toLowerCase())||u.toLowerCase().includes(ing.toLowerCase()))); const missing=req.filter(ing=>!matched.includes(ing)); const score=req.length>0?matched.length/req.length:0; return{...f,matched,missing,score}; }).filter(f=>f.score>0.25).sort((a,b)=>b.score-a.score).slice(0,8);
+  const el=$('fres'); if(!el) return;
+  if(!results.length){el.innerHTML=`<div class="empty"><div class="eico">😕</div><div class="ettl">Keine Treffer</div><div class="esub">Füge mehr Zutaten hinzu</div></div>`;return;}
+  el.innerHTML=`<div style="padding:9px 13px 4px;font-size:11px;font-weight:700;color:var(--grn)">✅ ${results.length} Gerichte möglich!</div>
+  ${results.map(f=>`<div class="li" style="align-items:flex-start;padding:12px 13px">
+    <div class="li-ico" style="margin-top:2px">${f.e}</div>
+    <div class="li-body"><div style="display:flex;align-items:center;gap:7px;margin-bottom:3px"><div class="li-name">${f.n}</div><div class="mpct ${f.score>.7?'mfull':'mpart'}">${Math.round(f.score*100)}%</div></div>
+    <div class="li-sub">${f.c} · ${fmtP(f.p)} · ${f.kcal} kcal</div>
+    ${f.missing.length?`<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px">${f.missing.slice(0,3).map(m=>`<span style="padding:2px 7px;border-radius:50px;font-size:9px;background:rgba(239,68,68,.1);color:#f87171;border:1px solid rgba(239,68,68,.22)">fehlt: ${m}</span>`).join('')}</div>`:`<div style="font-size:10px;color:var(--grn);margin-top:4px">✓ Alle Zutaten vorhanden!</div>`}</div>
+    <button class="smb" style="background:var(--acc);color:#fff;margin-top:2px" onclick="openDecisionFor(${f.id})">Kochen</button>
+  </div>`).join('')}`;
+}
+
+// ─── DECISION MODAL ───────────────────────────────────────────────────────────
+function openDecision(){ const p=getPool(); const f=p[swipeIdx]; if(f) openDecisionFor(f.id); }
+function openDecisionFor(id){
+  curFood=F.find(f=>f.id===id); if(!curFood) return;
+  $('decTitle').textContent=curFood.e+' '+curFood.n;
+  $('decLoc').textContent=`📍 ${city.n} · ${city.s}`;
+  const lat=loc.lat, lng=loc.lng, ne=encodeURIComponent(curFood.n);
+  const urls={
+    wolt:`https://wolt.com/de/aut/${city.w||'wien'}?lat=${lat}&lon=${lng}`,
+    maps:`https://www.google.com/maps/search/${ne}+Restaurant/@${lat},${lng},14z`,
+    rezept:`https://www.google.com/search?q=${ne}+Rezept+einfach`,
+    markt:`https://www.google.com/maps/search/Supermarkt/@${lat},${lng},15z`,
+  };
+  $('decGrid').innerHTML=[
+    ['🛵','Auf Wolt',city.n,'wolt'],['🍽️','Restaurant',city.n+' Umgebung','maps'],
+    ['👨‍🍳','Rezept','Selbst kochen','rezept'],['🛍️','Supermarkt','Zutaten kaufen','markt'],
+  ].map(([ico,lbl,sub,key])=>`<div class="dbtn" onclick="window.open('${urls[key]}','_blank')">
+    <span class="dico">${ico}</span><span class="dlbl">${lbl}</span><span class="dsub">${sub}</span>
+  </div>`).join('');
+  if(pro) setTimeout(()=>logMeal(curFood),1000);
+  openModal('decOvl');
+}
+
+// ─── PRICE COMPARE ────────────────────────────────────────────────────────────
+function openPriceCompare(){ const p=getPool(); const f=p[swipeIdx]; if(f) showPriceCompare(f); }
+function showPriceCompare(food){
+  const w=food.p, fo=+(food.p*(0.95+Math.random()*.12)).toFixed(2), li=+(food.p*(0.92+Math.random()*.18)).toFixed(2);
+  const min=Math.min(w,fo,li);
+  const lat=loc.lat,lng=loc.lng,ne=encodeURIComponent(food.n);
+  $('priceSheet').innerHTML=`<div class="syne" style="font-size:16px;font-weight:900;margin-bottom:4px">${food.e} ${food.n}</div>
+  <div style="font-size:11px;color:var(--mut);margin-bottom:14px">📍 ${city.n} · Preisvergleich</div>
+  ${[['🛵 Wolt',w,`https://wolt.com/de/aut/${city.w||'wien'}?lat=${lat}&lon=${lng}`],['🟠 Foodora',fo,`https://www.foodora.at/restaurant/search?lat=${lat}&lng=${lng}&q=${ne}`],['🔵 Lieferando',li,`https://www.lieferando.at/lieferservice/`]].map(([pl,pr,url])=>`<div style="display:flex;align-items:center;padding:12px;border-radius:12px;background:var(--card);border:1px solid ${pr===min?'rgba(0,230,118,.3)':'var(--bdr2)'};margin-bottom:7px">
+    <span style="font-size:13px;flex:1;font-weight:600">${pl}</span>
+    ${pr===min?'<span style="padding:3px 9px;border-radius:50px;background:rgba(0,230,118,.12);color:var(--grn);font-size:10px;font-weight:700;border:1px solid rgba(0,230,118,.22);margin-right:8px">Günstigste 🏆</span>':''}
+    <span style="font-size:16px;font-weight:900;color:${pr===min?'var(--grn)':'#fff'};margin-right:10px">${fmtP(pr)}</span>
+    <div onclick="window.open('${url}','_blank')" style="padding:5px 12px;border-radius:50px;background:var(--acc);color:#fff;font-size:11px;font-weight:700;cursor:pointer">→</div>
+  </div>`).join('')}
+  <div style="font-size:9px;color:var(--mut);text-align:center;margin-top:6px;margin-bottom:10px">Preise sind Schätzungen · können je nach Uhrzeit variieren</div>
+  <button class="scl" onclick="closeModal('priceOvl')">Schließen</button>`;
+  openModal('priceOvl');
+}
+
+// ─── RESTAURANT INFO ──────────────────────────────────────────────────────────
+const RST_BY_CUISINE={
+  Japanese:[{n:'Mochi',d:'Mariahilf',r:4.8,pr:'€€€',o:true},{n:'Yohm',d:'Innere Stadt',r:4.6,pr:'€€',o:true},{n:'Akakiko',d:'Mehrere Standorte',r:4.3,pr:'€',o:true}],
+  Italian:[{n:'Pizzeria Osteria',d:'Neubau',r:4.7,pr:'€€',o:true},{n:'Vapiano',d:'Mehrere',r:4.2,pr:'€',o:true},{n:'Bella Italia',d:'Innere Stadt',r:4.6,pr:'€€',o:false}],
+  Austrian:[{n:'Figlmüller',d:'Innere Stadt',r:4.8,pr:'€€€',o:true},{n:'Zum Wohl',d:'Neubau',r:4.5,pr:'€€',o:true},{n:'Steirereck',d:'Stadtpark',r:4.9,pr:'€€€€',o:true}],
+  American:[{n:'Shake Shack',d:'Mariahilf',r:4.5,pr:'€€',o:true},{n:'Hard Rock Cafe',d:'Innere Stadt',r:4.2,pr:'€€€',o:true},{n:'Joe Pena\'s',d:'Naschmarkt',r:4.4,pr:'€€',o:true}],
+  Korean:[{n:'Bawi',d:'Mariahilf',r:4.7,pr:'€€',o:true},{n:'Korea House',d:'Favoriten',r:4.5,pr:'€',o:true},{n:'Ssam',d:'Neubau',r:4.8,pr:'€€€',o:false}],
+  Thai:[{n:'Song',d:'Neubau',r:4.8,pr:'€€',o:true},{n:'Tanawit',d:'Mariahilf',r:4.6,pr:'€€',o:true},{n:'Lotus Thai',d:'Mehrere',r:4.3,pr:'€€',o:true}],
+  Indian:[{n:'Indus',d:'Innere Stadt',r:4.7,pr:'€€',o:true},{n:'Taj Mahal',d:'Mehrere',r:4.4,pr:'€€',o:true},{n:'Bollywood',d:'Favoriten',r:4.3,pr:'€',o:false}],
+  Lebanese:[{n:'Habibi & Hawara',d:'Naschmarkt',r:4.6,pr:'€',o:true},{n:'Neni am Naschmarkt',d:'Naschmarkt',r:4.8,pr:'€€€',o:true},{n:'Shams',d:'Mariahilf',r:4.5,pr:'€€',o:true}],
+};
+const CUISINE_INFO={
+  Japanese:{f:'🇯🇵',d:'Japanische Küche steht für Perfektion und Umami. Von Ramen bis Omakase — jedes Gericht ist ein Handwerk.'},
+  Italian:{f:'🇮🇹',d:'Die Mutter der westlichen Küche. Einfache Zutaten, maximaler Geschmack. Regional sehr verschieden.'},
+  Austrian:{f:'🇦🇹',d:'Herzhaft, saisonal und tief in der Wiener Tradition verwurzelt. Schnitzel ist nur der Anfang.'},
+  American:{f:'🇺🇸',d:'Comfort Food auf höchstem Niveau — von BBQ bis Fine Dining Burger. Portionen sind ernst gemeint.'},
+  Korean:{f:'🇰🇷',d:'Fermentiert, scharf, umami-reich. Kimchi und Gochujang machen jede Mahlzeit besonders.'},
+  Thai:{f:'🇹🇭',d:'Balance von süß, sauer, scharf und salzig. Eine der komplexesten Küchen der Welt.'},
+  Indian:{f:'🇮🇳',d:'Über 30 regionale Küchen vereint durch Gewürze. Ayurvedische Wurzeln, explosive Aromen.'},
+  Mexican:{f:'🇲🇽',d:'Jahrtausende alte Tradition trifft Street Food Kultur. UNESCO Weltkulturerbe der Gastronomie.'},
+  Lebanese:{f:'🇱🇧',d:'Mezze-Kultur: viele kleine Gerichte, frische Kräuter. Teilen ist Pflicht.'},
+  Vietnamese:{f:'🇻🇳',d:'Leicht, frisch, aromatisch. Pho und Bánh Mì sind nur die Bekanntesten von hunderten Gerichten.'},
+};
+function openRestaurant(id){
+  const food=F.find(f=>f.id===id); if(!food) return;
+  const rsts=(RST_BY_CUISINE[food.c]||[]).map(r=>r);
+  const ci=CUISINE_INFO[food.c]||{f:'🌍',d:'Eine Weltküche mit eigener Geschichte und unverwechselbaren Aromen.'};
+  const lat=loc.lat, lng=loc.lng, ne=encodeURIComponent(food.n);
+  $('rstSheet').innerHTML=`
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px">
+      <span style="font-size:36px">${food.e}</span>
+      <div><div class="syne" style="font-size:17px;font-weight:900">${food.n}</div><div style="font-size:11px;color:var(--mut)">${food.c} · ${city.n}</div></div>
+    </div>
+    ${rsts.length?`<div style="font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.1em;margin-bottom:8px">📍 Restaurants in ${city.n}</div>
+    ${rsts.map(r=>`<div style="padding:11px 13px;border-radius:12px;background:var(--card);border:1px solid var(--bdr2);margin-bottom:7px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+        <span style="font-size:13px;font-weight:700">${r.n}</span>
+        <span style="padding:2px 8px;border-radius:50px;font-size:9px;font-weight:700;background:${r.o?'rgba(0,230,118,.12)':'rgba(239,68,68,.12)'};color:${r.o?'var(--grn)':'var(--red)'};border:1px solid ${r.o?'rgba(0,230,118,.22)':'rgba(239,68,68,.22)'}">${r.o?'Offen':'Geschlossen'}</span>
+      </div>
+      <div style="font-size:10px;color:var(--mut);margin-bottom:8px">${r.d} · ${r.pr} · ⭐${r.r}</div>
+      <div style="display:flex;gap:7px">
+        <div onclick="window.open('https://www.google.com/maps/search/${encodeURIComponent(r.n)}+${encodeURIComponent(city.n)}','_blank')" style="flex:1;padding:7px;border-radius:9px;background:var(--dim);border:1px solid var(--bdr);text-align:center;font-size:10px;font-weight:700;cursor:pointer;color:var(--txt)">📍 Maps</div>
+        <div onclick="window.open('https://www.google.com/maps/search/${encodeURIComponent(r.n)}+${encodeURIComponent(city.n)}+Bewertungen','_blank')" style="flex:1;padding:7px;border-radius:9px;background:var(--dim);border:1px solid var(--bdr);text-align:center;font-size:10px;font-weight:700;cursor:pointer;color:var(--txt)">⭐ Reviews</div>
+      </div>
+    </div>`).join('')}`:''}
+    <div style="font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.1em;margin:12px 0 8px">🔗 Direkt-Links</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px">
+      ${[['📍 Google Maps',`https://www.google.com/maps/search/${ne}+Restaurant/@${lat},${lng},14z`],['⭐ Reviews',`https://www.google.com/maps/search/${ne}+Restaurant+${encodeURIComponent(city.n)}+Bewertungen`],['🛵 Wolt',`https://wolt.com/de/aut/${city.w||'wien'}?lat=${lat}&lon=${lng}`],['🟠 Foodora',`https://www.foodora.at/restaurant/search?lat=${lat}&lng=${lng}&q=${ne}`]].map(([lbl,url])=>`<div onclick="window.open('${url}','_blank')" style="padding:10px;border-radius:11px;background:var(--card);border:1px solid var(--bdr2);text-align:center;cursor:pointer;font-size:11px;font-weight:700;color:var(--txt)">${lbl}</div>`).join('')}
+    </div>
+    <div style="padding:13px;border-radius:12px;background:rgba(255,107,53,.06);border:1px solid rgba(255,107,53,.14)">
+      <div style="font-size:11px;font-weight:700;color:var(--acc);margin-bottom:5px">${ci.f} ${food.c} Küche</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.5);line-height:1.6">${ci.d}</div>
+    </div>
+    <div onclick="window.open('https://www.google.com/maps/search/${ne}+Restaurant/@${lat},${lng},14z','_blank')" style="margin-top:12px;padding:12px;border-radius:12px;background:var(--acc);color:#fff;font-size:13px;font-weight:800;text-align:center;cursor:pointer;font-family:'Syne',sans-serif">In der Nähe suchen → ${city.n}</div>
+    <button class="scl" onclick="closeModal('rstOvl')">Schließen</button>`;
+  openModal('rstOvl');
+}
+
+// ─── SOCIAL ───────────────────────────────────────────────────────────────────
+function renderSocial(){
+  const trending=F.slice().sort((a,b)=>(b.v+Math.random()*50)-(a.v+Math.random()*50)).slice(0,5);
+  const friends=[
+    {n:'Lena M.',e:'👩‍🦱',c:'rgba(255,107,53,.25)',last:'Sushi Platter',ago:'vor 2h'},
+    {n:'Max K.',e:'👨‍🦰',c:'rgba(68,138,255,.25)',last:'Smash Burger',ago:'vor 4h'},
+    {n:'Sara B.',e:'👩‍🦳',c:'rgba(0,230,118,.25)',last:'Poke Bowl',ago:'gestern'},
+  ];
+  $('view').innerHTML=`
+    <div class="shdr"><div class="sttl">👥 Social</div><div class="ssub">${city.n} · Beta</div></div>
+    <div class="scroll">
+      <div class="scard"><div class="scard-hdr"><span style="font-size:22px">🔥</span><div style="flex:1"><div style="font-size:12px;font-weight:700">Trending in ${city.n}</div><div style="font-size:10px;color:var(--mut)">Diese Woche</div></div></div>
+        ${trending.map((f,i)=>`<div class="trow"><div class="trank${i<3?' top':''}">${i+1}</div><div style="font-size:20px">${f.e}</div><div style="flex:1"><div style="font-size:12px;font-weight:700">${f.n}</div><div style="font-size:10px;color:var(--mut)">${f.c} · ⭐${f.r}</div></div><div style="font-size:10px;color:var(--mut)">${(f.v+Math.floor(Math.random()*30))} Likes</div></div>`).join('')}
+      </div>
+      <div class="scard"><div class="scard-hdr"><span style="font-size:22px">👥</span><div style="flex:1"><div style="font-size:12px;font-weight:700">Freunde</div><div style="font-size:10px;color:var(--mut)">Was sie gerade essen</div></div></div>
+        ${friends.map(f=>`<div class="trow"><div class="favt" style="background:${f.c}">${f.e}</div><div style="flex:1"><div style="font-size:12px;font-weight:700">${f.n}</div><div style="font-size:10px;color:var(--mut)">${f.last} · ${f.ago}</div></div></div>`).join('')}
+      </div>
+      <div class="scard" style="margin-bottom:8px"><div class="scard-hdr"><span style="font-size:22px">📸</span><div><div style="font-size:12px;font-weight:700">Story teilen</div><div style="font-size:10px;color:var(--mut)">Zeig was du isst</div></div></div>
+        <div style="padding:13px;display:flex;flex-direction:column;gap:8px">
+          <div onclick="shareWeek()" style="padding:12px;border-radius:12px;background:linear-gradient(135deg,rgba(255,107,53,.15),rgba(255,0,110,.1));border:1px solid rgba(255,107,53,.25);cursor:pointer;display:flex;align-items:center;gap:10px"><span style="font-size:20px">📊</span><div><div style="font-size:12px;font-weight:700">Woche teilen</div><div style="font-size:10px;color:var(--mut)">Stats als Story exportieren</div></div></div>
+          <div onclick="shareCurrent()" style="padding:12px;border-radius:12px;background:var(--card);border:1px solid var(--bdr2);cursor:pointer;display:flex;align-items:center;gap:10px"><span style="font-size:20px">🍽️</span><div><div style="font-size:12px;font-weight:700">Aktuelles Gericht teilen</div><div style="font-size:10px;color:var(--mut)">Swipe-Card als Bild</div></div></div>
+        </div>
+      </div>
+      <div style="height:16px"></div>
+    </div>`;
+}
+
+// ─── SHARE ────────────────────────────────────────────────────────────────────
+function shareWeek(){
+  const td=todayMeals(); const sp=td.reduce((s,m)=>s+m.p,0); const kc=td.reduce((s,m)=>s+m.kcal,0);
+  const txt=`📊 Heute ${td.length} Mahlzeiten · ${kc} kcal · ${fmtP(sp)}\n🏙️ ${city.n}\n\nEntdeckt mit HUNGERHERO 🍽️`;
+  if(navigator.share){navigator.share({title:'HUNGERHERO Stats',text:txt}).catch(()=>{});}
+  else{navigator.clipboard?.writeText(txt);toast('📋 In Zwischenablage kopiert!');}
+  profile.shares=(profile.shares||0)+1; save('hh_profile',profile); checkAchievements();
+}
+function shareCurrent(){
+  const p=getPool(); const food=p[swipeIdx];
+  if(!food){toast('Kein Gericht zum Teilen');return;}
+  const txt=`${food.e} ${food.n}\n${food.c} · ${fmtP(food.p)} · ⭐${food.r}\n🏙️ ${city.n}\n\nEntdeckt mit HUNGERHERO 🍽️`;
+  if(navigator.share){navigator.share({title:food.n,text:txt}).catch(()=>{});}
+  else{navigator.clipboard?.writeText(txt);toast('📋 In Zwischenablage kopiert!');}
+  profile.shares=(profile.shares||0)+1; save('hh_profile',profile); checkAchievements();
+}
+
+// ─── PROFILE ──────────────────────────────────────────────────────────────────
+function renderProfile(){
+  const topT=Object.entries(profile.tags||{}).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const topC=Object.entries(profile.cuisines||{}).sort((a,b)=>b[1]-a[1]).slice(0,5);
+  const maxT=topT[0]?.[1]||1; const maxC=topC[0]?.[1]||1;
+  const lr=profile.sw>0?Math.round(profile.lk/profile.sw*100):0;
+  $('view').innerHTML=`
+    <div class="shdr"><div class="sttl">👤 Profil</div><div class="ssub">${city.n} · ${city.s}</div></div>
+    <div class="scroll">
+      <div style="padding:14px 13px 10px;display:flex;flex-direction:column;align-items:center;gap:8px">
+        <div style="width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,var(--acc),var(--acc2));display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;color:#fff;font-family:'Syne',sans-serif">H</div>
+        <div class="syne" style="font-size:16px;font-weight:900">HungerHero User</div>
+        <div style="font-size:11px;color:var(--mut)">${city.e} ${city.n} · ${city.s}</div>
+        ${pro?'<span class="probadge">PRO Mitglied</span>':''}
+      </div>
+      <div style="display:flex;gap:8px;padding:0 13px 12px">
+        <div class="pstat"><span class="psn">${profile.sw||0}</span><span class="psl">Swipes</span></div>
+        <div class="pstat"><span class="psn">${profile.lk||0}</span><span class="psl">Likes</span></div>
+        <div class="pstat"><span class="psn">${lr}%</span><span class="psl">Like-Rate</span></div>
+      </div>
+      ${topT.length?`<div style="padding:0 13px 10px"><div style="font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px">Top Geschmacks-Tags</div>${topT.map(([t,n])=>`<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span style="color:var(--txt)">${t}</span><span style="color:var(--mut)">${n}×</span></div><div class="tbar"><div class="tbf" style="width:${Math.round(n/maxT*100)}%"></div></div></div>`).join('')}</div>`:''}
+      ${topC.length?`<div style="padding:0 13px 10px"><div style="font-size:10px;font-weight:700;color:var(--mut);text-transform:uppercase;letter-spacing:.1em;margin-bottom:7px">Lieblings-Küchen</div>${topC.map(([c,n])=>`<div style="margin-bottom:6px"><div style="display:flex;justify-content:space-between;font-size:11px;margin-bottom:3px"><span style="color:var(--txt)">${c}</span><span style="color:var(--mut)">${n}×</span></div><div class="tbar"><div class="tbf" style="width:${Math.round(n/maxC*100)}%;background:var(--blu)"></div></div></div>`).join('')}</div>`:''}
+      <div style="padding:0 13px 10px;display:flex;flex-direction:column;gap:8px">
+        <div onclick="setTab('history')" style="padding:12px 13px;border-radius:12px;background:var(--card);border:1px solid var(--bdr2);display:flex;align-items:center;gap:10px;cursor:pointer"><span style="font-size:18px">📋</span><span style="font-size:13px;font-weight:600">Swipe-History (${histLog.length})</span><span style="font-size:13px;color:var(--mut);margin-left:auto">→</span></div>
+        <div onclick="setTab('achieve')" style="padding:12px 13px;border-radius:12px;background:var(--card);border:1px solid var(--bdr2);display:flex;align-items:center;gap:10px;cursor:pointer"><span style="font-size:18px">🏆</span><span style="font-size:13px;font-weight:600">Achievements (${achievedIds.length}/${ACHIEVES.length})</span><span style="font-size:13px;color:var(--mut);margin-left:auto">→</span></div>
+        ${!pro?`<div onclick="openPaywall()" style="padding:12px 13px;border-radius:12px;background:linear-gradient(135deg,rgba(255,214,10,.12),rgba(255,107,53,.1));border:1px solid rgba(255,214,10,.25);display:flex;align-items:center;gap:10px;cursor:pointer"><span style="font-size:18px">👑</span><span style="font-size:13px;font-weight:700;color:var(--yel)">Pro freischalten</span><span style="font-size:13px;color:var(--mut);margin-left:auto">→</span></div>`:''}
+        <div onclick="if(confirm('Profil wirklich zurücksetzen?')){resetAll()}" style="padding:12px 13px;border-radius:12px;background:rgba(239,68,68,.07);border:1px solid rgba(239,68,68,.18);display:flex;align-items:center;gap:10px;cursor:pointer"><span style="font-size:18px">🗑️</span><span style="font-size:13px;font-weight:600;color:var(--red)">Profil zurücksetzen</span></div>
+      </div>
+      <div style="height:16px"></div>
+    </div>`;
+}
+function resetAll(){ localStorage.clear(); location.reload(); }
+
+// ─── HISTORY ──────────────────────────────────────────────────────────────────
+function renderHistory(){
+  $('view').innerHTML=`<div class="shdr"><div class="sttl">📋 History</div><div class="sact" onclick="setTab('profile')">← Zurück</div></div>
+  ${histLog.length?`<div class="scroll">${histLog.map(f=>`<div class="li"><div class="li-ico">${f.e}</div><div class="li-body"><div class="li-name">${f.n}</div><div class="li-sub">${f.c} · ${f.ts} · ${f.dir==='right'?'❤️ Geliked':f.dir==='up'?'📅 Geplant':'✕ Übersprungen'}</div></div><button class="smb" style="background:rgba(255,107,53,.1);color:var(--acc);border:1px solid rgba(255,107,53,.2)" onclick="openDecisionFor(${f.id})">Holen</button></div>`).join('')}<div style="height:16px"></div></div>`:`<div class="empty"><div class="eico">📋</div><div class="ettl">Noch keine History</div><div class="esub">Swipe Gerichte um eine History aufzubauen</div></div>`}`;
+}
+
+// ─── ACHIEVEMENTS ─────────────────────────────────────────────────────────────
+const ACHIEVES=[
+  {id:'first_swipe',e:'⚡',t:'Erster Swipe!',d:'Du hast dein erstes Gericht entdeckt',chk:p=>p.sw>=1},
+  {id:'swipe10',e:'🔥',t:'10 entdeckt',d:'Du kennst dich langsam aus',chk:p=>p.sw>=10},
+  {id:'swipe50',e:'🚀',t:'50 Swipes',d:'Echter HungerHero am Werk',chk:p=>p.sw>=50},
+  {id:'swipe100',e:'👑',t:'100 Swipes',d:'Legendäre Entschlossenheit',chk:p=>p.sw>=100},
+  {id:'first_like',e:'❤️',t:'Erstes Like',d:'Dein erstes gemerktes Gericht',chk:p=>p.lk>=1},
+  {id:'water_goal',e:'💧',t:'2 Liter!',d:'Heute perfekt hydratisiert',chk:()=>todayGlasses()>=WATER_GOAL},
+  {id:'log7',e:'📊',t:'7 Tage geloggt',d:'Eine Woche Mahlzeiten-Log — stark!',chk:p=>p.logStreak>=7},
+  {id:'cuisine5',e:'🌍',t:'5 Küchen',d:'Dein Gaumen wird international',chk:p=>Object.keys(p.cuisines||{}).length>=5},
+  {id:'cuisine10',e:'🗺️',t:'10 Küchen',d:'Echter Weltenbummler am Teller',chk:p=>Object.keys(p.cuisines||{}).length>=10},
+  {id:'vegan5',e:'🌱',t:'5× Vegan',d:'Die Erde dankt dir',chk:p=>(p.tags?.vegan||0)+(p.tags?.vegetarian||0)>=5},
+  {id:'spicy_lover',e:'🌶️',t:'Spicy Lover',d:'Du liebst es scharf — kein Zweifel',chk:p=>(p.tags?.spicy||0)>=6},
+  {id:'first_share',e:'📸',t:'Story geteilt',d:'Danke fürs Teilen!',chk:p=>p.shares>=1},
+  {id:'pro_unlock',e:'⭐',t:'Pro aktiviert!',d:'Du unterstützt die App — danke 🙏',chk:p=>p.isPro===true},
+  {id:'fridge_scan',e:'🧊',t:'Kühlschrank gescannt',d:'Kreatives Kochen beginnt zuhause',chk:p=>p.fridgeScans>=1},
+  {id:'plan_week',e:'📅',t:'Wochenplan erstellt',d:'Meal Prep auf dem nächsten Level',chk:p=>p.planCreated===true},
+  {id:'cities3',e:'🏙️',t:'3 Städte erkundet',d:'Österreich in all seiner Vielfalt',chk:()=>ls('hh_cities_visited',[]).length>=3},
+  {id:'austria_explorer',e:'🇦🇹',t:'Österreich-Explorer',d:'Wien bis Vorarlberg — du kennst alles',chk:()=>ls('hh_cities_visited',[]).length>=5},
+  {id:'hangry',e:'😤',t:'Hangry Mode',d:'50 Gerichte auf einmal?!',chk:p=>p.sw>=50&&p.lk>=25},
+];
+
+function checkAchievements(){
+  ACHIEVES.forEach(a=>{
+    if(achievedIds.includes(a.id)) return;
+    if(a.chk(profile)){ achievedIds.push(a.id); save('hh_ach',achievedIds); showAchievement(a); }
+  });
+  // track cities
+  const visited=ls('hh_cities_visited',[]);
+  if(!visited.includes(city.n)){ visited.push(city.n); save('hh_cities_visited',visited); }
+}
+
+function showAchievement(a){
+  const card=$('acCard');
+  card.innerHTML=`<div style="position:relative;padding:4px 0 8px">
+    <div style="font-size:60px;display:block;margin-bottom:12px;animation:pi .4s cubic-bezier(.175,.885,.32,1.275)">${a.e}</div>
+    <div style="font-size:11px;font-weight:700;color:var(--yel);text-transform:uppercase;letter-spacing:.12em;margin-bottom:7px">Achievement freigeschaltet!</div>
+    <div class="syne" style="font-size:20px;font-weight:900;margin-bottom:6px">${a.t}</div>
+    <div style="font-size:12px;color:var(--mut);margin-bottom:22px;line-height:1.5">${a.d}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+      <button onclick="shareAchievement(${JSON.stringify(a)})" style="padding:11px;border-radius:11px;background:rgba(255,214,10,.12);border:1px solid rgba(255,214,10,.25);color:var(--yel);font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">📸 Story teilen</button>
+      <button onclick="closeAchievement()" style="padding:11px;border-radius:11px;background:var(--dim);border:1px solid var(--bdr);color:var(--mut);font-size:12px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif">Weiter →</button>
+    </div>
+  </div>`;
+  $('acOvl').classList.add('on');
+  spawnConfetti();
+  setTimeout(()=>$('acOvl').classList.remove('on'),5000);
+}
+function closeAchievement(){ $('acOvl').classList.remove('on'); }
+function shareAchievement(a){
+  const txt=`${a.e} Achievement freigeschaltet: "${a.t}"\n${a.d}\n🏙️ ${city.n} · HUNGERHERO 🍽️`;
+  if(navigator.share) navigator.share({title:'Achievement!',text:txt}).catch(()=>{});
+  else{ navigator.clipboard?.writeText(txt); toast('📋 Kopiert!'); }
+  closeAchievement();
+}
+function spawnConfetti(){
+  const colors=['#FF6B35','#FFD60A','#00E676','#448AFF','#C084FC','#FF006E'];
+  for(let i=0;i<28;i++){
+    const el=document.createElement('div'); el.className='confetti-piece';
+    el.style.cssText=`left:${10+Math.random()*80}%;background:${colors[Math.floor(Math.random()*colors.length)]};animation-duration:${1.4+Math.random()*.8}s;animation-delay:${Math.random()*.4}s;transform:rotate(${Math.random()*360}deg);border-radius:${Math.random()>0.5?'50%':'2px'}`;
+    document.body.appendChild(el);
+    setTimeout(()=>el.remove(),2800);
+  }
+}
+
+function renderAchievements(){
+  $('view').innerHTML=`<div class="shdr"><div class="sttl">🏆 Achievements</div><div class="ssub">${achievedIds.length}/${ACHIEVES.length} erreicht</div></div>
+  <div class="scroll">
+    <div class="agrid">${ACHIEVES.map(a=>`<div class="acard${achievedIds.includes(a.id)?' unlocked':' locked'}" onclick="${achievedIds.includes(a.id)?`shareAchievement(${JSON.stringify(a).replace(/"/g,"'")})`:''}">
+      <span class="aico">${a.e}</span><div class="atitle">${a.t}</div>
+    </div>`).join('')}
+    </div><div style="height:16px"></div>
+  </div>`;
+}
+
+// ─── WATCHLIST / PREISALARM ───────────────────────────────────────────────────
+function addWatchlist(foodId, targetPrice){
+  if(!pro){openPaywall();return;}
+  const food=F.find(f=>f.id===foodId); if(!food) return;
+  watchlist=watchlist.filter(w=>w.id!==foodId);
+  watchlist.push({id:foodId,n:food.n,e:food.e,base:food.p,target:targetPrice,added:new Date().toISOString(),triggered:false});
+  save('hh_watchlist',watchlist);
+  toast(`🔔 Preisalarm für ${food.e} ${food.n} bei ${fmtP(targetPrice)} gesetzt`);
+  checkPriceAlerts();
+}
+function checkPriceAlerts(){
+  watchlist.forEach(w=>{
+    if(w.triggered) return;
+    const cur=+(w.base*(0.85+Math.random()*.3)).toFixed(2);
+    if(cur<=w.target){ w.triggered=true; save('hh_watchlist',watchlist); toast(`🔔 ${w.e} ${w.n} jetzt nur ${fmtP(cur)}! Dein Zielpreis: ${fmtP(w.target)}`,4000); }
+  });
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+window.addEventListener('load',()=>{
+  initLoc();
+  if(pro){ $('proBtn').innerHTML='👑'; $('proBtn').style.background='linear-gradient(135deg,rgba(255,214,10,.35),rgba(255,107,53,.35))'; }
+  renderMood();
+  setTimeout(checkPriceAlerts, 2000);
+  // Init paywall features
+  document.querySelectorAll('#pwFeatures').forEach(el=>{
+    el.innerHTML=[['💚','Health Dashboard','Kalorien, Budget, Makros'],['🧠','Lernende Mood Engine','Wird mit jedem Swipe smarter'],['💰','Preisalarm','Push wenn dein Gericht günstiger wird'],['🧊','Kühlschrank-KI','Rezepte aus vorhandenen Zutaten'],['📅','Wochenbudget-Planer','7 Tage automatisch geplant']].map(([i,t,s])=>`<div style="display:flex;gap:10px;align-items:center;padding:9px 11px;border-radius:11px;background:var(--card);border:1px solid var(--bdr2)"><span style="font-size:18px">${i}</span><div><div style="font-size:12px;font-weight:700;color:#fff">${t}</div><div style="font-size:10px;color:var(--mut);margin-top:1px">${s}</div></div></div>`).join('');
+  });
+});
+</script>
+</body>
+</html>
